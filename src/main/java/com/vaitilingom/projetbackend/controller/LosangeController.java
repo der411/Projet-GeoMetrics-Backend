@@ -24,7 +24,7 @@ public class LosangeController {
 
     @GetMapping("/{id}")
     public Losange getLosangeById(@PathVariable int id) {
-        return losangeService.getLosangeById(id).orElseThrow(() -> new IllegalArgumentException("Invalid Losange ID:" + id));
+        return losangeService.getLosangeById(id).orElseThrow(() -> new IllegalArgumentException("Invalide Losange ID:" + id));
     }
 
     @PostMapping

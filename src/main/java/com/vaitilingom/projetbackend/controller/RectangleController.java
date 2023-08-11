@@ -24,7 +24,7 @@ public class RectangleController {
 
     @GetMapping("/{id}")
     public Rectangle getRectangleById(@PathVariable int id) {
-        return rectangleService.getRectangleById(id).orElseThrow(() -> new IllegalArgumentException("Invalid Rectangle ID:" + id));
+        return rectangleService.getRectangleById(id).orElseThrow(() -> new IllegalArgumentException("Invalide Rectangle ID:" + id));
     }
 
     @PostMapping

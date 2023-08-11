@@ -23,7 +23,7 @@ public class SphereController {
 
     @GetMapping("/{id}")
     public Sphere getSphereById(@PathVariable int id) {
-        return sphereService.getSphereById(id).orElseThrow(() -> new IllegalArgumentException("Invalid Sphere ID:" + id));
+        return sphereService.getSphereById(id).orElseThrow(() -> new IllegalArgumentException("Invalide Sphere ID:" + id));
     }
 
     @PostMapping

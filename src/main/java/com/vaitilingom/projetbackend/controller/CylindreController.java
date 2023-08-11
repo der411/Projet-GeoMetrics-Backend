@@ -23,7 +23,7 @@ public class CylindreController {
 
     @GetMapping("/{id}")
     public Cylindre getCylindreById(@PathVariable int id) {
-        return cylindreService.getCylindreById(id).orElseThrow(() -> new IllegalArgumentException("Invalid Cylindre ID:" + id));
+        return cylindreService.getCylindreById(id).orElseThrow(() -> new IllegalArgumentException("Invalide Cylindre ID:" + id));
     }
 
     @PostMapping

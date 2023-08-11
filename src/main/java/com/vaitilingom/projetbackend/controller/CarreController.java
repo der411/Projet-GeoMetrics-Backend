@@ -23,7 +23,7 @@ public class CarreController {
 
     @GetMapping("/{id}")
     public Carre getCarreById(@PathVariable int id) {
-        return carreService.getCarreById(id).orElseThrow(() -> new IllegalArgumentException("ID Carre Invalide:" + id));
+        return carreService.getCarreById(id).orElseThrow(() -> new IllegalArgumentException("Invalide Carré ID:" + id));
     }
 
     @PostMapping

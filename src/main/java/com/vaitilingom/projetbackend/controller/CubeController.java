@@ -23,7 +23,7 @@ public class CubeController {
 
     @GetMapping("/{id}")
     public Cube getCubeById(@PathVariable int id) {
-        return cubeService.getCubeById(id).orElseThrow(() -> new IllegalArgumentException("Invalid Cube ID:" + id));
+        return cubeService.getCubeById(id).orElseThrow(() -> new IllegalArgumentException("Invalide Cube ID:" + id));
     }
 
     @PostMapping

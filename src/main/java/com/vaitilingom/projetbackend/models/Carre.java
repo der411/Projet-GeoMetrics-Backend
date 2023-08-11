@@ -15,16 +15,18 @@ public class Carre extends Forme2d {
     @Column(name = "cote")
     private Double cote;
 
+    // constructeur par défaut
     public Carre(){
         super();
     }
 
+    // constructeur
     public Carre(String nom, String couleur, double cote) {
-        super(nom, couleur); // on appelle le constructeur de la classe Rectangle avec la même valeur pour la longueur et la largeur
+        super(nom, couleur);
         this.cote = cote;
     }
 
-    // méthodes
+    // méthodes implémentées
     public double perimetre() {
         return 4 * cote;
     }
@@ -32,7 +34,4 @@ public class Carre extends Forme2d {
     public double surface() {
         return cote * cote;
     }
-
-
-
 }
