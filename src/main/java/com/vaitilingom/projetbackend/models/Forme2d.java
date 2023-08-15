@@ -10,9 +10,6 @@ import lombok.Setter;
 @Table(name = "forme2d")
 public abstract class Forme2d extends Forme {
 
-    @Id
-    @Column(name = "id", nullable = false)
-    private Integer id;
 
     public Forme2d(){};
 

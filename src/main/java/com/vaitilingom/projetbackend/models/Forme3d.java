@@ -9,9 +9,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "forme3d")
 public abstract class Forme3d extends Forme {
-    @Id
-    @Column(name = "id", nullable = false)
-    private Integer id;
 
     public Forme3d(){}
 
