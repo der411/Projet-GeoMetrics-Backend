@@ -1,5 +1,6 @@
 package com.vaitilingom.projetbackend.controller;
 
+import com.vaitilingom.projetbackend.models.Carre;
 import com.vaitilingom.projetbackend.models.Rectangle;
 import com.vaitilingom.projetbackend.services.RectangleService;
 import org.springframework.web.bind.annotation.*;
@@ -37,10 +38,18 @@ public class RectangleController {
         rectangle.setId(id);
         return rectangleService.updateRectangle(rectangle);
     }
-
-
     @DeleteMapping("/{id}")
     public void deleteRectangle(@PathVariable int id) {
         rectangleService.deleteRectangle(id);
+    }
+
+    //Méthodes pragmatiques propres au Carré (REST-like)
+    @PostMapping("/surface")
+    public double getSurface(@RequestBody Rectangle rectangle) {
+        return rectangleService.calculerSurface(rectangle);
+    }
+    @PostMapping("/perimetre")
+    public double getPerimetre(@RequestBody Rectangle rectangle) {
+        return rectangleService.calculerPerimetre(rectangle);
     }
 }

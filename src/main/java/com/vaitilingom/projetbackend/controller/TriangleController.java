@@ -1,5 +1,6 @@
 package com.vaitilingom.projetbackend.controller;
 
+import com.vaitilingom.projetbackend.models.Losange;
 import com.vaitilingom.projetbackend.models.Triangle;
 import com.vaitilingom.projetbackend.services.TriangleService;
 import org.springframework.web.bind.annotation.*;
@@ -36,10 +37,19 @@ public class TriangleController {
         triangle.setId(id);
         return triangleService.updateTriangle(triangle);
     }
-
-
     @DeleteMapping("/{id}")
     public void deleteTriangle(@PathVariable int id) {
         triangleService.deleteTriangle(id);
+    }
+
+    //Méthodes pragmatiques propres au Triangle (REST-like)
+
+    @PostMapping("/perimetre")
+    public double getPerimetre(@RequestBody Triangle triangle) {
+        return triangleService.calculerPerimetre(triangle);
+    }
+    @PostMapping("/surface")
+    public double getSurface(@RequestBody Triangle triangle) {
+        return triangleService.calculerSurface(triangle);
     }
 }

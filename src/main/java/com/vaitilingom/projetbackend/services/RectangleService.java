@@ -1,5 +1,6 @@
 package com.vaitilingom.projetbackend.services;
 
+import com.vaitilingom.projetbackend.models.Carre;
 import com.vaitilingom.projetbackend.models.Rectangle;
 import com.vaitilingom.projetbackend.repository.RectangleRepository;
 import org.springframework.stereotype.Service;
@@ -35,5 +36,14 @@ public class RectangleService {
 
     public void deleteRectangle(int id) {
         rectangleRepository.deleteById(id);
+    }
+
+    //Méthodes spécifiques au Rectangle
+
+    public double calculerPerimetre(Rectangle rectangle) {
+        return rectangle.perimetre();
+    }
+    public double calculerSurface(Rectangle rectangle) {
+        return rectangle.surface();
     }
 }

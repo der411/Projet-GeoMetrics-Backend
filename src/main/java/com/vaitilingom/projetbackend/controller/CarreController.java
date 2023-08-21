@@ -5,6 +5,7 @@ import com.vaitilingom.projetbackend.services.CarreService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/carres")
@@ -16,11 +17,11 @@ public class CarreController {
         this.carreService = carreService;
     }
 
+    //CRUD API RESTful
     @GetMapping
     public List<Carre> getCarres() {
         return carreService.getCarres();
     }
-
     @GetMapping("/{id}")
     public Carre getCarreById(@PathVariable int id) {
         return carreService.getCarreById(id).orElseThrow(() -> new IllegalArgumentException("Invalide Carré ID:" + id));
@@ -30,16 +31,26 @@ public class CarreController {
     public Carre addCarre(@RequestBody Carre carre) {
         return carreService.addCarre(carre);
     }
-
     @PutMapping("/{id}")
     public Carre updateCarre(@PathVariable int id, @RequestBody Carre carre) {
         carre.setId(id);
         return carreService.updateCarre(carre);
     }
-
-
     @DeleteMapping("/{id}")
     public void deleteCarre(@PathVariable int id) {
         carreService.deleteCarre(id);
     }
+
+
+    //Méthodes pragmatiques propres au Carré (REST-like)
+    @PostMapping("/surface")
+    public double getSurface(@RequestBody Carre carre) {
+        return carreService.calculerSurface(carre);
+    }
+    @PostMapping("/perimetre")
+    public double getPerimetre(@RequestBody Carre carre) {
+        return carreService.calculerPerimetre(carre);
+    }
 }
+
+

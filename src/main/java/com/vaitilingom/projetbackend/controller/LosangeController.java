@@ -1,6 +1,7 @@
 package com.vaitilingom.projetbackend.controller;
 
 
+import com.vaitilingom.projetbackend.models.Cylindre;
 import com.vaitilingom.projetbackend.models.Losange;
 import com.vaitilingom.projetbackend.services.LosangeService;
 import org.springframework.web.bind.annotation.*;
@@ -37,10 +38,19 @@ public class LosangeController {
         losange.setId(id);
         return losangeService.updateLosange(losange);
     }
-
-
     @DeleteMapping("/{id}")
     public void deleteLosange(@PathVariable int id) {
         losangeService.deleteLosange(id);
+    }
+
+    //Méthodes pragmatiques propres au Losange (REST-like)
+
+    @PostMapping("/perimetre")
+    public double getPerimetre(@RequestBody Losange losange) {
+        return losangeService.calculerPerimetre(losange);
+    }
+    @PostMapping("/surface")
+    public double getSurface(@RequestBody Losange losange) {
+        return losangeService.calculerSurface(losange);
     }
 }

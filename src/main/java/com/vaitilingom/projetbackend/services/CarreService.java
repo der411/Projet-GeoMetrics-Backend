@@ -10,7 +10,7 @@ import java.util.Optional;
 @Service
 public class CarreService {
     //Attribut
-    private final CarreRepository carreRepository;
+    private CarreRepository carreRepository;
 
     //Constructeur
     public CarreService(CarreRepository carreRepository) {
@@ -38,4 +38,14 @@ public class CarreService {
     public void deleteCarre(int id) {
         carreRepository.deleteById(id);
     }
+
+    //Méthodes spécifiques au Carré
+
+    public double calculerSurface(Carre carre) {
+        return carre.surface();
+    }
+    public double calculerPerimetre(Carre carre) {
+        return carre.perimetre();
+    }
+
 }

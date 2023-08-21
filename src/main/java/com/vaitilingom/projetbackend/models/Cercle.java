@@ -26,10 +26,14 @@ public class Cercle extends Forme2d {
     }
 
     // méthodes implémentées
+    public double circonference() {
+        return 2 * Math.PI * rayon; // calcul de la circonférence du cercle
+    }
     @Override
     public double perimetre() {
-        return 2 * Math.PI * rayon; // calcul du périmètre du cercle
+        return circonference(); // pour les cercles, le périmètre est en fait la circonférence
     }
+
 
     @Override
     public double surface() {

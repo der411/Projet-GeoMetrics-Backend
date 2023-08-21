@@ -1,5 +1,6 @@
 package com.vaitilingom.projetbackend.services;
 
+import com.vaitilingom.projetbackend.models.Carre;
 import com.vaitilingom.projetbackend.models.Sphere;
 import com.vaitilingom.projetbackend.repository.SphereRepository;
 import org.springframework.stereotype.Service;
@@ -36,5 +37,14 @@ public class SphereService {
 
     public void deleteSphere(int id) {
         sphereRepository.deleteById(id);
+    }
+
+    //Méthodes spécifiques à la Sphère
+
+    public double calculerSurface(Sphere sphere) {
+        return sphere.surface();
+    }
+    public double calculerVolume(Sphere sphere) {
+        return sphere.volume();
     }
 }

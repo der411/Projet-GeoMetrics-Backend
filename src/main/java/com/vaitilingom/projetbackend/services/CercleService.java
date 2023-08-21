@@ -1,5 +1,6 @@
 package com.vaitilingom.projetbackend.services;
 
+import com.vaitilingom.projetbackend.models.Carre;
 import com.vaitilingom.projetbackend.models.Cercle;
 import com.vaitilingom.projetbackend.repository.CercleRepository;
 import org.springframework.stereotype.Service;
@@ -37,5 +38,14 @@ public class CercleService {
 
     public void deleteCercle(int id) {
         cercleRepository.deleteById(id);
+    }
+
+    //Méthodes spécifiques au Cercle
+
+    public double calculerSurface(Cercle cercle) {
+        return cercle.surface();
+    }
+    public double calculerCirconference(Cercle cercle) {
+        return cercle.circonference();
     }
 }

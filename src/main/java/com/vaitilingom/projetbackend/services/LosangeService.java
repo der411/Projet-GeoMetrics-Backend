@@ -1,5 +1,6 @@
 package com.vaitilingom.projetbackend.services;
 
+import com.vaitilingom.projetbackend.models.Cylindre;
 import com.vaitilingom.projetbackend.models.Losange;
 import com.vaitilingom.projetbackend.repository.LosangeRepository;
 import org.springframework.stereotype.Service;
@@ -37,5 +38,14 @@ public class LosangeService {
 
     public void deleteLosange(int id) {
         losangeRepository.deleteById(id);
+    }
+
+    //Méthodes spécifiques au Losange
+
+    public double calculerPerimetre(Losange losange) {
+        return losange.perimetre();
+    }
+    public double calculerSurface(Losange losange) {
+        return losange.surface();
     }
 }
