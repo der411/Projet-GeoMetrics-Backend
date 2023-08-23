@@ -1,6 +1,5 @@
 package com.vaitilingom.projetbackend.controller;
 
-import com.vaitilingom.projetbackend.models.Carre;
 import com.vaitilingom.projetbackend.models.Cube;
 import com.vaitilingom.projetbackend.services.CubeService;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +16,7 @@ public class CubeController {
         this.cubeService = cubeService;
     }
 
+    //Endpoints CRUD
     @GetMapping
     public List<Cube> getCubes() {
         return cubeService.getCubes();
@@ -42,11 +42,13 @@ public class CubeController {
         cubeService.deleteCube(id);
     }
 
-    //Méthodes pragmatiques propres au Cube (REST-like)
+    //Endpoints méthodes pragmatiques
+
     @PostMapping("/surface")
     public double getSurface(@RequestBody Cube cube) {
         return cubeService.calculerSurface(cube);
     }
+
     @PostMapping("/volume")
     public double getPerimetre(@RequestBody Cube cube) {
         return cubeService.calculerVolume(cube);

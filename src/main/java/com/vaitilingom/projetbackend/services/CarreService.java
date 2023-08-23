@@ -39,11 +39,12 @@ public class CarreService {
         carreRepository.deleteById(id);
     }
 
-    //Méthodes spécifiques au Carré
+    //Méthodes pragmatiques
 
     public double calculerSurface(Carre carre) {
         return carre.surface();
     }
+
     public double calculerPerimetre(Carre carre) {
         return carre.perimetre();
     }

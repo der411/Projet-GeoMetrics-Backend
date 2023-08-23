@@ -1,6 +1,5 @@
 package com.vaitilingom.projetbackend.controller;
 
-import com.vaitilingom.projetbackend.models.Carre;
 import com.vaitilingom.projetbackend.models.Cercle;
 import com.vaitilingom.projetbackend.services.CercleService;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +16,7 @@ public class CercleController {
         this.cercleService = cercleService;
     }
 
+    //Endpoints CRUD
     @GetMapping
     public List<Cercle> getCercles() {
         return cercleService.getCercles();
@@ -43,11 +43,13 @@ public class CercleController {
         cercleService.deleteCercle(id);
     }
 
-    //Méthodes pragmatiques propres au Cercle (REST-like)
+    //Endpoints méthodes pragmatiques
+
     @PostMapping("/surface")
     public double getSurface(@RequestBody Cercle cercle) {
         return cercleService.calculerSurface(cercle);
     }
+
     @PostMapping("/circonference")
     public double getCirconference(@RequestBody Cercle cercle) {
         return cercleService.calculerCirconference(cercle);

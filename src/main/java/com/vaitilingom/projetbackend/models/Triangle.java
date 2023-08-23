@@ -11,27 +11,28 @@ import lombok.Setter;
 
 public class Triangle extends Forme2d{
 
+    //Attributs
     @Column(name = "cote_adjacent")
     private Double coteAdjacent;
 
     @Column(name = "cote_oppose")
     private Double coteOppose;
 
-    // Hypoténuse n'est pas stockée car elle peut être calculée à partir des côtés adjacents et opposés.
-    public double getHypotenuse() {
-        return Math.sqrt(coteAdjacent * coteAdjacent + coteOppose * coteOppose);
-    }
-
-    //Constructeur par défaut
+    //Constructeur par défaut (utilisé par l'ORM Hibernate)
     public Triangle(){
         super();
     }
 
-    //Constructeur
+    //Constructeur (non utilisé, mais conservé)
     public Triangle(String nom, String couleur, double coteAdjacent, double coteOppose) {
         super(nom, couleur);
         this.coteAdjacent = coteAdjacent;
         this.coteOppose = coteOppose;
+    }
+
+    // Hypoténuse n'est pas stockée car elle peut être calculée à partir des côtés adjacents et opposés.
+    public double getHypotenuse() {
+        return Math.sqrt(coteAdjacent * coteAdjacent + coteOppose * coteOppose);
     }
 
     //Méthodes implémentées

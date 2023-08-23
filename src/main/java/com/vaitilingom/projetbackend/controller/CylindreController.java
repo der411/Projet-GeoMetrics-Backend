@@ -1,6 +1,5 @@
 package com.vaitilingom.projetbackend.controller;
 
-import com.vaitilingom.projetbackend.models.Carre;
 import com.vaitilingom.projetbackend.models.Cylindre;
 import com.vaitilingom.projetbackend.services.CylindreService;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +16,7 @@ public class CylindreController {
         this.cylindreService = cylindreService;
     }
 
+    //Endpoints CRUD
     @GetMapping
     public List<Cylindre> getCylindres() {
         return cylindreService.getCylindres();
@@ -43,11 +43,13 @@ public class CylindreController {
         cylindreService.deleteCylindre(id);
     }
 
-    //Méthodes pragmatiques propres au Cylindre (REST-like)
+    //Endpoints méthodes pragmatiques
+
     @PostMapping("/surface")
     public double getSurface(@RequestBody Cylindre cylindre) {
         return cylindreService.calculerSurface(cylindre);
     }
+
     @PostMapping("/volume")
     public double getVolume(@RequestBody Cylindre cylindre) {
         return cylindreService.calculerVolume(cylindre);

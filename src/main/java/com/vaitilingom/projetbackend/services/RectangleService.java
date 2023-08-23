@@ -1,6 +1,5 @@
 package com.vaitilingom.projetbackend.services;
 
-import com.vaitilingom.projetbackend.models.Carre;
 import com.vaitilingom.projetbackend.models.Rectangle;
 import com.vaitilingom.projetbackend.repository.RectangleRepository;
 import org.springframework.stereotype.Service;
@@ -38,7 +37,7 @@ public class RectangleService {
         rectangleRepository.deleteById(id);
     }
 
-    //Méthodes spécifiques au Rectangle
+    //Méthodes pragmatiques
 
     public double calculerPerimetre(Rectangle rectangle) {
         return rectangle.perimetre();

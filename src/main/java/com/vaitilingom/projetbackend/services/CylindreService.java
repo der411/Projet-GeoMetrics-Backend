@@ -1,6 +1,5 @@
 package com.vaitilingom.projetbackend.services;
 
-import com.vaitilingom.projetbackend.models.Carre;
 import com.vaitilingom.projetbackend.models.Cylindre;
 import com.vaitilingom.projetbackend.repository.CylindreRepository;
 import org.springframework.stereotype.Service;
@@ -41,7 +40,7 @@ public class CylindreService {
         cylindreRepository.deleteById(id);
     }
 
-    //Méthodes spécifiques au Cylindre
+    //Méthodes pragmatiques
 
     public double calculerSurface(Cylindre cylindre) {
         return cylindre.surface();

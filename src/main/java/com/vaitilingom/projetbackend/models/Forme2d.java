@@ -10,16 +10,14 @@ import lombok.Setter;
 @Table(name = "forme2d")
 public abstract class Forme2d extends Forme {
 
-
+    //Constructeur par défaut (utilisé par l'ORM Hibernate)
     public Forme2d(){};
 
-    // constructeur
+    //Constructeur (non utilisé, mais conservé)
     public Forme2d(String nom, String couleur) {
         super(nom, couleur);
     }
-    /**
-     * Méthode abstraite à implementer, qui calcule le périmètre d'une forme2d
-     * * @return le perimètre de la forme2d.
-     */
-    public abstract double perimetre();
+
+    //Méthode abstraite
+    public abstract double perimetre(); //A implémenter dans les classes concrètes héritières
 }

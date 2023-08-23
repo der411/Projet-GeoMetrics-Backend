@@ -11,15 +11,16 @@ import lombok.Setter;
 
 public class Cube extends Forme3d{
 
+    //Attribut
     @Column(name = "cote")
     private Double cote;
 
-    // constructeur par défaut
+    // constructeur par défaut (utilisé par l'ORM Hibernate)
     public Cube() {
         super();
     }
 
-    // constructeur
+    // constructeur (non utilisé, mais conservé)
     public Cube(String nom, String couleur, double cote) {
         super(nom, couleur);
         this.cote = cote;
@@ -28,12 +29,12 @@ public class Cube extends Forme3d{
     // méthodes implémentées
     @Override
     public double surface() {
-        return 6 * cote * cote; // calcul de la surface du cube
+        return 6 * cote * cote;
     }
 
     @Override
     public double volume() {
-        return cote * cote * cote; // calcul du volume du cube
+        return cote * cote * cote;
     }
 
 }

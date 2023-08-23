@@ -11,14 +11,16 @@ import lombok.Setter;
 
 public class Sphere extends Forme3d{
 
+    //Attribut
     @Column(name = "rayon")
     private Double rayon;
 
-    //Constructeur par défaut
+    //Constructeur par défaut (utilisé par l'ORM Hibernate)
     public Sphere(){
         super();
     }
-    //Constructeur
+
+    //Constructeur (non utilisé, mais conservé)
     public Sphere(String nom, String couleur, double rayon) {
         super(nom, couleur);
         this.rayon = rayon;

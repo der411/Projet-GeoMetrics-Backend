@@ -11,18 +11,19 @@ import lombok.Setter;
 
 public class Cylindre extends Forme3d {
 
+    //Attributs
     @Column(name = "hauteur")
     private Double hauteur;
 
     @Column(name = "rayon")
     private Double rayon;
 
-    // constructeur par défaut
+    // constructeur par défaut (utilisé par l'ORM Hibernate)
     public Cylindre(){
         super();
     }
 
-    // constructeur
+    // constructeur (non utilisé, mais conservé)
     public Cylindre(String nom, String couleur, double rayon, double hauteur) {
         super(nom, couleur);
         this.rayon = rayon;

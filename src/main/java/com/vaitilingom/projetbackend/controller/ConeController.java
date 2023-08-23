@@ -1,10 +1,6 @@
 package com.vaitilingom.projetbackend.controller;
 
-
-import com.vaitilingom.projetbackend.models.Carre;
 import com.vaitilingom.projetbackend.models.Cone;
-import com.vaitilingom.projetbackend.models.Cylindre;
-import com.vaitilingom.projetbackend.models.Sphere;
 import com.vaitilingom.projetbackend.services.ConeService;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +16,7 @@ public class ConeController {
         this.coneService = coneService;
     }
 
+    //Endpoints CRUD
     @GetMapping
     public List<Cone> getCones() {
         return coneService.getCones();
@@ -45,11 +42,13 @@ public class ConeController {
         coneService.deleteCone(id);
     }
 
-    //Méthodes pragmatiques propres au Cone (REST-like)
+    //Endpoints méthodes pragmatiques
+
     @PostMapping("/surface")
     public double getSurface(@RequestBody Cone cone) {
         return coneService.calculerSurface(cone);
     }
+
     @PostMapping("/volume")
     public double getVolume(@RequestBody Cone cone) {
         return coneService.calculerVolume(cone);

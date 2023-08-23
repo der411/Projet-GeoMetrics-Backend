@@ -1,6 +1,5 @@
 package com.vaitilingom.projetbackend.services;
 
-import com.vaitilingom.projetbackend.models.Carre;
 import com.vaitilingom.projetbackend.repository.CubeRepository;
 import com.vaitilingom.projetbackend.models.Cube;
 import org.springframework.stereotype.Service;
@@ -40,7 +39,7 @@ public class CubeService {
         cubeRepository.deleteById(id);
     }
 
-    //Méthodes spécifiques au Cube
+    //Méthodes pragmatiques
 
     public double calculerSurface(Cube cube) {
         return cube.surface();

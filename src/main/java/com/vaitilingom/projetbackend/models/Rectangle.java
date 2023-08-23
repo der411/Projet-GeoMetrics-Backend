@@ -11,18 +11,19 @@ import lombok.Setter;
 
 public class Rectangle extends Forme2d {
 
+    //Attributs
     @Column(name = "largeur")
     private Double largeur;
 
     @Column(name = "longueur")
     private Double longueur;
 
-    //Constructeur par défaut
+    //Constructeur par défaut (utilisé par l'ORM Hibernate)
     public Rectangle(){
         super();
     }
 
-    //Constructeur
+    //Constructeur (non utilisé, mais conservé)
     public Rectangle(String nom, String couleur, double longueur, double largeur) {
         super(nom, couleur);
         this.longueur = longueur;

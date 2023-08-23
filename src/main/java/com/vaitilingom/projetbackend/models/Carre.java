@@ -1,6 +1,5 @@
 package com.vaitilingom.projetbackend.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,16 +11,17 @@ import lombok.Setter;
 
 public class Carre extends Forme2d {
 
+    //Attribut
     @Column(name = "cote")
     private Double cote;
 
-    // constructeur par défaut
+    // constructeur par défaut (utilisé par l'ORM Hibernate)
     public Carre(){
         super();
     }
 
-    // constructeur
-    public Carre(String nom, String couleur, double cote) {
+    // constructeur (non utilisé, mais conservé)
+    public Carre(String nom, String couleur, double cote){
         super(nom, couleur);
         this.cote = cote;
     }

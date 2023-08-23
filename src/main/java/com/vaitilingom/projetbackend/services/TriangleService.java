@@ -1,6 +1,5 @@
 package com.vaitilingom.projetbackend.services;
 
-import com.vaitilingom.projetbackend.models.Sphere;
 import com.vaitilingom.projetbackend.models.Triangle;
 import com.vaitilingom.projetbackend.repository.TriangleRepository;
 import org.springframework.stereotype.Service;
@@ -40,11 +39,10 @@ public class TriangleService {
         triangleRepository.deleteById(id);
     }
 
-    //Méthodes spécifiques au Triangle
+    //Méthodes pragmatiques
 
-    public double calculerSurface(Triangle triangle) {
-        return triangle.surface();
-    }
+    public double calculerSurface(Triangle triangle) {return triangle.surface();}
+
     public double calculerPerimetre(Triangle triangle) {
         return triangle.perimetre();
     }

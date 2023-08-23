@@ -11,15 +11,16 @@ import lombok.Setter;
 
 public class Cercle extends Forme2d {
 
+    //Attribut
     @Column(name = "rayon")
     private Double rayon;
 
-    // constructeur par défaut
+    // constructeur par défaut (utilisé par l'ORM Hibernate)
     public Cercle(){
         super();
     }
 
-    // constructeur
+    // constructeur (non utilisé, mais conservé)
     public Cercle(String nom, String couleur, double rayon) {
         super(nom, couleur);
         this.rayon = rayon;
@@ -29,9 +30,10 @@ public class Cercle extends Forme2d {
     public double circonference() {
         return 2 * Math.PI * rayon; // calcul de la circonférence du cercle
     }
+
     @Override
     public double perimetre() {
-        return circonference(); // pour les cercles, le périmètre est en fait la circonférence
+        return circonference(); // pour les cercles, le périmètre se nomme la circonférence
     }
 
 

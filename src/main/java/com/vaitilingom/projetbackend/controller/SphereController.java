@@ -1,7 +1,5 @@
 package com.vaitilingom.projetbackend.controller;
 
-import com.vaitilingom.projetbackend.models.Carre;
-import com.vaitilingom.projetbackend.models.Rectangle;
 import com.vaitilingom.projetbackend.models.Sphere;
 import com.vaitilingom.projetbackend.services.SphereService;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +16,7 @@ public class SphereController {
         this.sphereService = sphereService;
     }
 
+    //Endpoints CRUD
     @GetMapping
     public List<Sphere> getSpheres() {
         return sphereService.getSpheres();
@@ -43,11 +42,13 @@ public class SphereController {
         sphereService.deleteSphere(id);
     }
 
-    //Méthodes pragmatiques propres à la Sphère (REST-like)
+    //Endpoints méthodes pragmatiques
+
     @PostMapping("/surface")
     public double getSurface(@RequestBody Sphere sphere) {
         return sphereService.calculerSurface(sphere);
     }
+
     @PostMapping("/volume")
     public double getVolume(@RequestBody Sphere sphere) {
         return sphereService.calculerVolume(sphere);

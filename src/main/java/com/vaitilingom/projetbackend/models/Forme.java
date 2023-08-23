@@ -8,11 +8,12 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "forme")
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.JOINED) //JPA_Stratégie d'héritage
 
 public abstract class Forme {
+    //Attributs
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //JPA_Stratégie de génération de l'identifiant
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -22,17 +23,16 @@ public abstract class Forme {
     @Column(name = "nom")
     private String nom;
 
+    //Constructeur par défaut (utilisé par l'ORM Hibernate)
     public Forme(){}
 
+    //Constructeur (non utilisé, mais conservé)
     public Forme(String nom, String couleur) {
         this.nom = nom;
         this.couleur = couleur;
     }
 
-    /**
-     * Méthode abstraite à implementer, qui calcule la surface d'une forme (2d ou 3d)
-     * @return la surface de la forme.
-     */
-    public abstract double surface();
+    //Méthode abstraite
+    public abstract double surface(); //A implémenter dans les classes concrètes
 
 }

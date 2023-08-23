@@ -1,9 +1,6 @@
 package com.vaitilingom.projetbackend.services;
 
-import com.vaitilingom.projetbackend.models.Carre;
 import com.vaitilingom.projetbackend.models.Cone;
-import com.vaitilingom.projetbackend.models.Cylindre;
-import com.vaitilingom.projetbackend.models.Sphere;
 import org.springframework.stereotype.Service;
 import com.vaitilingom.projetbackend.repository.ConeRepository;
 
@@ -43,11 +40,12 @@ public class ConeService {
         coneRepository.deleteById(id);
     }
 
-    //Méthodes spécifiques au Cone
+    //Méthodes pragmatiques
 
     public double calculerSurface(Cone cone) {
         return cone.surface();
     }
+
     public double calculerVolume(Cone cone) {
         return cone.volume();
     }
