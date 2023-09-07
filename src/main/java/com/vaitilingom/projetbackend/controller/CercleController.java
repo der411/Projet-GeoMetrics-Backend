@@ -24,7 +24,7 @@ public class CercleController {
 
     @GetMapping("/{id}")
     public Cercle getCercleById(@PathVariable int id) {
-        return cercleService.getCercleById(id).orElseThrow(() -> new IllegalArgumentException("Invalide Cercle ID:" + id));
+        return cercleService.getCercleById(id).orElseThrow(() -> new IllegalArgumentException("ID Cercle Invalide:" + id));
     }
 
     @PostMapping

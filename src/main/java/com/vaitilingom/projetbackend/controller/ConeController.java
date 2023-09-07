@@ -24,7 +24,7 @@ public class ConeController {
 
     @GetMapping("/{id}")
     public Cone getConeById(@PathVariable int id) {
-        return coneService.getConeById(id).orElseThrow(() -> new IllegalArgumentException("Invalide Cone ID:" + id));
+        return coneService.getConeById(id).orElseThrow(() -> new IllegalArgumentException("ID Cone Invalide:" + id));
     }
 
     @PostMapping

@@ -24,7 +24,7 @@ public class TriangleController {
 
     @GetMapping("/{id}")
     public Triangle getTriangleById(@PathVariable int id) {
-        return triangleService.getTriangleById(id).orElseThrow(() -> new IllegalArgumentException("Invalide Triangle ID:" + id));
+        return triangleService.getTriangleById(id).orElseThrow(() -> new IllegalArgumentException("ID Triangle Invalide:" + id));
     }
 
     @PostMapping

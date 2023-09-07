@@ -2,8 +2,9 @@ package com.vaitilingom.projetbackend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
-@SpringBootApplication
+@SpringBootApplication //(exclude = {SecurityAutoConfiguration.class}) ---> pour desactiver la sécurité
 public class ProjetBackendApplication {
 
     public static void main(String[] args) {
@@ -11,3 +12,5 @@ public class ProjetBackendApplication {
     }
 
 }
+
+//spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
