@@ -29,9 +29,9 @@ services:
   spring-boot-app:
     image: openjdk:11-jdk
     ports:
-      - "8080:8080"
+      - "8080:8081"
     depends_on:
-      - db
+        - db
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/calcul_formes_db
       SPRING_DATASOURCE_USERNAME: root

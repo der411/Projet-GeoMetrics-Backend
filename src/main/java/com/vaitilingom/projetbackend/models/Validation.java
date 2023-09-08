@@ -1,24 +1,28 @@
 package com.vaitilingom.projetbackend.models;
 
-
-import com.vaitilingom.projetbackend.TypeDeRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "Role")
+@Table(name = "Validation")
+public class Validation {
 
-public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Enumerated(EnumType.STRING)
-    private TypeDeRole libelle;
+    private Instant creation;
+    private Instant expiration;
+    private Instant activation;
+    private String code;
+    @OneToOne(cascade = CascadeType.ALL)
+    private User user;
 }
