@@ -3,8 +3,10 @@ version: '3.1'
 services:
 
   db:
-    container_name: my_mysql_container
-    image: mysql:8.0.34
+    container_name: my_mariadb_container
+    image: mariadb:10.4
+    volumes:
+      - ./mariadb-data:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
@@ -12,24 +14,24 @@ services:
     ports:
       - 3308:3306
 
+
   adminer:
     container_name: my_adminer_container
-    image: adminer:4.8.0-standalone
+    image: adminer:4.8.1-standalone
     restart: always
     ports:
       - 9080:8080
 
-  smtp4dev:
-    image: rnwood/smtp4dev:v3
-    restart: always
+  mailhog:
+    image: mailhog/mailhog
     ports:
-      - '9081:80'
-      - '9025:25'
+      - "8025:8025"  # Interface utilisateur Web
+      - "1025:1025"  # Port SMTP
 
   spring-boot-app:
-    image: openjdk:11-jdk
+    image: projet-backend-0.0.1-snapshot:latest
     ports:
-      - "8080:8081"
+      - "8081:8080"
     depends_on:
         - db
     environment:

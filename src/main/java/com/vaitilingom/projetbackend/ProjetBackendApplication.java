@@ -13,4 +13,3 @@ public class ProjetBackendApplication {
 
 }
 
-//spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
