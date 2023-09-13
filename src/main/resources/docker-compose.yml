@@ -13,7 +13,8 @@ services:
       MYSQL_ROOT_PASSWORD: ViN10020
     ports:
       - 3308:3306
-
+    networks:
+      - app_network
 
   adminer:
     container_name: my_adminer_container
@@ -21,20 +22,32 @@ services:
     restart: always
     ports:
       - 9080:8080
+    networks:
+      - app_network
 
   mailhog:
     image: mailhog/mailhog
     ports:
-      - "8025:8025"  # Interface utilisateur Web
-      - "1025:1025"  # Port SMTP
+      - "8025:8025"  # Pour accéder à l'interface MailHog depuis votre machine locale
+      - "1025:1025"  # Port SMTP pour envoyer des emails
+    networks:
+      - app_network
 
   spring-boot-app:
     image: projet-backend-0.0.1-snapshot:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8081:8080"
-    depends_on:
-        - db
+    networks:
+      - app_network
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/calcul_formes_db
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: ViN10020
+      - SPRING_MAIL_HOST=mailhog
+      - SPRING_MAIL_PORT=1025
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/calcul_formes_db
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=ViN10020
+
+networks:
+  app_network:
