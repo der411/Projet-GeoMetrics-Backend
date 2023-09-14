@@ -5,7 +5,7 @@ import com.vaitilingom.projetbackend.services.CubeService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/cubes")
 public class CubeController {

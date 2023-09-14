@@ -14,7 +14,7 @@ services:
     ports:
       - 3308:3306
     networks:
-      - app_network
+      - app_geometrics
 
   adminer:
     container_name: my_adminer_container
@@ -23,7 +23,7 @@ services:
     ports:
       - 9080:8080
     networks:
-      - app_network
+      - app_geometrics
 
   mailhog:
     image: mailhog/mailhog
@@ -31,9 +31,9 @@ services:
       - "8025:8025"  # Pour accéder à l'interface MailHog depuis votre machine locale
       - "1025:1025"  # Port SMTP pour envoyer des emails
     networks:
-      - app_network
+      - app_geometrics
 
-  spring-boot-app:
+  backend:
     image: projet-backend-0.0.1-snapshot:latest
     build:
       context: .
@@ -41,7 +41,9 @@ services:
     ports:
       - "8081:8080"
     networks:
-      - app_network
+      - app_geometrics
+    depends_on:
+      - db
     environment:
       - SPRING_MAIL_HOST=mailhog
       - SPRING_MAIL_PORT=1025
@@ -49,5 +51,19 @@ services:
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=ViN10020
 
+  frontend:
+    image: projet-frontend:0.0.1-snapshot
+    build:
+      context: ../../../../../git/Projet-Frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8083:80"
+    networks:
+      - app_geometrics
+    environment:
+      - API_URL=http://backend:8081
+    volumes:
+      - ../../../../../git/Projet-Frontend:/app:delegated
+
 networks:
-  app_network:
+  app_geometrics:

@@ -3,13 +3,11 @@ package com.vaitilingom.projetbackend.controller;
 import com.vaitilingom.projetbackend.models.Avis;
 import com.vaitilingom.projetbackend.services.AvisService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
 @RequestMapping("/api")
+@CrossOrigin(origins = "*")
 @RestController
 public class AvisController {
 
