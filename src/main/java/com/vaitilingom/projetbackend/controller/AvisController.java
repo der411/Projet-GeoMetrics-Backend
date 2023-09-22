@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
 @RequestMapping("/api")
-@CrossOrigin(origins = "*")
 @RestController
+@CrossOrigin(origins = "http://localhost:8083")
 public class AvisController {
 
     private final AvisService avisService;

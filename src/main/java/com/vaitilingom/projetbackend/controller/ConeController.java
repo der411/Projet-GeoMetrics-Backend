@@ -5,9 +5,10 @@ import com.vaitilingom.projetbackend.services.ConeService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@CrossOrigin(origins = "*")
+
 @RestController
 @RequestMapping("/api/cones")
+@CrossOrigin(origins = "http://localhost:8083")
 public class ConeController {
 
     private final ConeService coneService;

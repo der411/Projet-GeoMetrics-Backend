@@ -30,7 +30,7 @@ public class User implements UserDetails {
     @Column(name="mail")
     private String mail;
     @Column(name="mot_de_passe")
-    private String mdp;
+    private String passWord;
     private boolean actif = false;
     @OneToOne(cascade = CascadeType.ALL)
     private Role role;
@@ -42,7 +42,7 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return this.mdp;
+        return this.passWord;
     }
 
     @Override

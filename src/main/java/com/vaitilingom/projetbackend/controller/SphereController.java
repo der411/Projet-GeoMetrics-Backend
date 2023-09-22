@@ -5,9 +5,10 @@ import com.vaitilingom.projetbackend.services.SphereService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@CrossOrigin(origins = "*")
+
 @RestController
 @RequestMapping("/api/spheres")
+@CrossOrigin(origins = "http://localhost:8083")
 public class SphereController {
 
     private final SphereService sphereService;

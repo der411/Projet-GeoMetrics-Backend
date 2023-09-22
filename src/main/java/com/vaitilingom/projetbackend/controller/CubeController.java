@@ -5,9 +5,10 @@ import com.vaitilingom.projetbackend.services.CubeService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@CrossOrigin(origins = "*")
+
 @RestController
 @RequestMapping("/api/cubes")
+@CrossOrigin(origins = "http://localhost:8083")
 public class CubeController {
 
     private final CubeService cubeService;

@@ -5,9 +5,10 @@ import com.vaitilingom.projetbackend.services.CercleService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@CrossOrigin(origins = "*")
+
 @RestController
 @RequestMapping("/api/cercles")
+@CrossOrigin(origins = "http://localhost:8083")
 public class CercleController {
 
     private final CercleService cercleService;

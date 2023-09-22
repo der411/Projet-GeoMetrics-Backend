@@ -6,9 +6,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*")
+
 @RestController
 @RequestMapping("/api/rectangles")
+@CrossOrigin(origins = "http://localhost:8083")
 public class RectangleController {
 
     private final RectangleService rectangleService;

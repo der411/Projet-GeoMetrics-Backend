@@ -35,11 +35,11 @@ public class UserService implements UserDetailsService {
         if(userOptional.isPresent()) {
             throw new RuntimeException("Email déjà utilisé");
         }
-        String mdpCrypte = this.passwordEncoder.encode(user.getMdp());
-        user.setMdp(mdpCrypte);
+        String passWordCrypte = this.passwordEncoder.encode(user.getPassword());
+        user.setPassWord(passWordCrypte);
 
         Role roleUser = new Role();
-        roleUser.setLibelle(TypeDeRole.UTILISATEUR);
+        roleUser.setLibelle(TypeDeRole.USER);
         user.setRole(roleUser);
 
         user = this.userRepository.save(user);

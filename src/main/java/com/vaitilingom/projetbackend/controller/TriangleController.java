@@ -5,9 +5,10 @@ import com.vaitilingom.projetbackend.services.TriangleService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@CrossOrigin(origins = "*")
+
 @RestController
 @RequestMapping("/api/triangles")
+@CrossOrigin(origins = "http://localhost:8083")
 public class TriangleController {
 
     private final TriangleService triangleService;

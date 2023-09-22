@@ -5,9 +5,10 @@ import com.vaitilingom.projetbackend.services.CylindreService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@CrossOrigin(origins = "*")
+
 @RestController
 @RequestMapping("/api/cylindres")
+@CrossOrigin(origins = "http://localhost:8083")
 public class CylindreController {
 
     private final CylindreService cylindreService;
