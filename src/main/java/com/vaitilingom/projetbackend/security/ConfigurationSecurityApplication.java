@@ -27,7 +27,7 @@ public class ConfigurationSecurityApplication {
                 .authorizeHttpRequests(
                         authorize -> authorize
                                 .requestMatchers("/inscription").permitAll()
-                                .requestMatchers("/activation").permitAll()
+                                .requestMatchers("/validation").permitAll()
                                 .requestMatchers("/connexion").permitAll()
                                 .anyRequest().authenticated()
                 )

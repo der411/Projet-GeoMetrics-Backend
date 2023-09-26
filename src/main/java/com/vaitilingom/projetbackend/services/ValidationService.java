@@ -23,6 +23,7 @@ public class ValidationService {
         validation.setCreation(creation);
         Instant expiration = creation.plus(10, ChronoUnit.MINUTES);
         validation.setExpiration(expiration);
+        validation.setActivation(Instant.now());
 
         Random random = new Random();
         int randomInteger = random.nextInt(999999);
