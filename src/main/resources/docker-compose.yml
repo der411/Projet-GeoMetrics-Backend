@@ -39,7 +39,7 @@ services:
     networks:
       - app_geometrics
     volumes:
-      - ../../../../../git/Projet-Frontend:/app
+      - C:/Users/vaiti/IdeaProjects/Projet-Backend/default.conf:/etc/nginx/conf.d/default.conf
   backend:
     image: projet-backend-0.0.1-snapshot:latest
     build:

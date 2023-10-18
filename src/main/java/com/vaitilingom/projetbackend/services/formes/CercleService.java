@@ -1,0 +1,50 @@
+package com.vaitilingom.projetbackend.services.formes;
+
+import com.vaitilingom.projetbackend.models.formes.Cercle;
+import com.vaitilingom.projetbackend.repository.formes.CercleRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class CercleService {
+    //Attribut
+    private final CercleRepository cercleRepository;
+
+    //Constructeur
+    public CercleService(CercleRepository cercleRepository) {
+        this.cercleRepository = cercleRepository;
+    }
+
+    //Méthodes CRUD
+
+    public List<Cercle> getCercles() {
+        return cercleRepository.findAll();
+    }
+
+    public Optional<Cercle> getCercleById(int id) {
+        return cercleRepository.findById(id);
+    }
+
+    public Cercle addCercle(Cercle cercle) {
+        return cercleRepository.save(cercle);
+    }
+
+    public Cercle updateCercle(Cercle cercle) {
+        return cercleRepository.save(cercle);
+    }
+
+    public void deleteCercle(int id) {
+        cercleRepository.deleteById(id);
+    }
+
+    //Méthodes pragmatiques
+
+    public double calculerSurface(Cercle cercle) {
+        return cercle.surface();
+    }
+    public double calculerCirconference(Cercle cercle) {
+        return cercle.circonference();
+    }
+}
