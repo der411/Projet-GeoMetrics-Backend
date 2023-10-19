@@ -45,11 +45,22 @@ public class UserController {
         this.userService.inscription(user);
     }
 
-    @PostMapping (path = "/validation")
-    public void validation(@RequestBody Map<String, String> validation){
-        log.info("validation");
-        this.userService.activation(validation);
+    @PostMapping(path = "/validation")
+    public ResponseEntity<Map<String, Object>> validation(@RequestBody Map<String, String> validation) {
+        try {
+            log.info("validation");
+            boolean isValid = this.userService.activation(validation);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("valid", isValid);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        }
     }
+
 
     @PostMapping(path = "/connexion")
     public ResponseEntity<Map<String, String>> connexion(@RequestBody AuthenticationDTO authenticationDTO) {
@@ -87,14 +98,20 @@ public class UserController {
 
     @PreAuthorize("hasRole('ADMINISTRATEUR')")
     @PostMapping(path = "/set-admin/{mail}")
-    public ResponseEntity<String> setAdminRole(@PathVariable String mail) {
+    public ResponseEntity<Map<String, Object>> setAdminRole(@PathVariable String mail) {
         try {
             userService.setAdminRoleToUser(mail);
-            return new ResponseEntity<>("User role set to ADMINISTRATEUR successfully.", HttpStatus.OK);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", "YOUR_TOKEN_HERE"); // Remplacez par la logique de génération de votre token si nécessaire
+            response.put("user", Map.of("role", "ADMINISTRATEUR")); // Remplacez par la logique d'obtention du rôle si nécessaire
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
+
 
 
 }

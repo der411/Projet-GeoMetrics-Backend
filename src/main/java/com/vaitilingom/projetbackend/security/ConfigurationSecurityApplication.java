@@ -27,11 +27,15 @@ public class ConfigurationSecurityApplication {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .authorizeRequests()
-                .anyRequest().permitAll();
-
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeRequests(
+                        authorize -> authorize
+                                .requestMatchers("/error", "/inscription", "/validation", "/connexion").permitAll()
+                                .anyRequest().authenticated()
+                );
         return httpSecurity.build();
     }
+
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -49,17 +53,6 @@ public class ConfigurationSecurityApplication {
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         daoAuthenticationProvider.setPasswordEncoder(this.passwordEncoder());
         return daoAuthenticationProvider;
-    }
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Arrays.asList("*")); // ou spécifiez les origines que vous voulez
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-        config.setAllowCredentials(true);
-        config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
-        source.registerCorsConfiguration("/**", config);
-        return source;
     }
 
 }

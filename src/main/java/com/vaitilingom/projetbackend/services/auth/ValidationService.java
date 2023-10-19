@@ -4,12 +4,14 @@ import com.vaitilingom.projetbackend.models.auth.User;
 import com.vaitilingom.projetbackend.models.auth.Validation;
 import com.vaitilingom.projetbackend.repository.auth.ValidationRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Random;
 
+@Slf4j
 @AllArgsConstructor
 @Service
 public class ValidationService {
@@ -35,6 +37,14 @@ public class ValidationService {
     }
 
     public Validation lireEnFonctionDuCode(String code){
-        return this.validationRepository.findByCode(code).orElseThrow(() -> new RuntimeException("Code invalide"));
+        log.info("Code reçu pour validation: " + code);
+        Validation validation = this.validationRepository.findByCode(code)
+                .orElseThrow(() -> {
+                    log.error("Aucune validation trouvée pour le code: " + code);
+                    return new RuntimeException("Code invalide");
+                });
+        log.info("Validation trouvée pour le code: " + validation);
+        return validation;
     }
+
 }

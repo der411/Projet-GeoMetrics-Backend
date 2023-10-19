@@ -10,6 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -23,6 +26,9 @@ public class Role {
     private int id;
     @Enumerated(EnumType.STRING)
     private TypeDeRole libelle;
+    @OneToMany(mappedBy = "role")
+    private List<User> users = new ArrayList<>();
+
 
     public Role(String libelle) {
         this.libelle = TypeDeRole.valueOf(libelle);

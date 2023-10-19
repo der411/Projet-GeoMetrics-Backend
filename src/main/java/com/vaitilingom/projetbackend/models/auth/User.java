@@ -32,7 +32,8 @@ public class User implements UserDetails {
     @Column(name="mot_de_passe")
     private String passWord;
     private boolean actif = false;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "role_id")
     private Role role;
 
     @Override
