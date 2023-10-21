@@ -10,8 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -26,8 +26,8 @@ public class Role {
     private int id;
     @Enumerated(EnumType.STRING)
     private TypeDeRole libelle;
-    @OneToMany(mappedBy = "role")
-    private List<User> users = new ArrayList<>();
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+    private Set<User> users = new HashSet<>();
 
 
     public Role(String libelle) {

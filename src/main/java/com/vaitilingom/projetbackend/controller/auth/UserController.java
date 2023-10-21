@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -70,16 +71,19 @@ public class UserController {
                     new UsernamePasswordAuthenticationToken(authenticationDTO.mail(), authenticationDTO.passWord())
             );
 
-            // Récupérer l'utilisateur et son rôle
             User user = (User) authenticate.getPrincipal();
-            String role = user.getRole().getLibelle().toString(); // Obtenir directement le libellé du rôle
+
+            // Récupération de tous les rôles
+            String roles = user.getRoles().stream()
+                    .map(role -> role.getLibelle().toString())
+                    .collect(Collectors.joining(","));
 
             // Générer le JWT pour l'utilisateur authentifié
             String jwt = Jwts.builder()
                     .setSubject(authenticationDTO.mail())
-                    .claim("role", role) // Ajouter le rôle comme une claim
+                    .claim("roles", roles) // Ajouter tous les rôles comme une claim
                     .setIssuedAt(new Date())
-                    .setExpiration(new Date(System.currentTimeMillis() + 864000000)) // Expiration après 10 jours par exemple
+                    .setExpiration(new Date(System.currentTimeMillis() + 864000000))
                     .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
                     .compact();
 
@@ -94,7 +98,6 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
-
 
     @PreAuthorize("hasRole('ADMINISTRATEUR')")
     @PostMapping(path = "/set-admin/{mail}")
@@ -111,7 +114,4 @@ public class UserController {
             return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
-
-
-
 }

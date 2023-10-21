@@ -11,6 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -32,14 +35,22 @@ public class User implements UserDetails {
     @Column(name="mot_de_passe")
     private String passWord;
     private boolean actif = false;
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + this.role.getLibelle()));
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getLibelle()))
+                .collect(Collectors.toList());
     }
+
 
     @Override
     public String getPassword() {
@@ -69,10 +80,6 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return this.actif;
-    }
-
-    public Role getRole() {
-        return this.role;
     }
 
 }

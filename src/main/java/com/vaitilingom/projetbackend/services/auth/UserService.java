@@ -20,6 +20,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -29,27 +30,40 @@ public class UserService implements UserDetailsService {
     private BCryptPasswordEncoder passwordEncoder;
     private ValidationService validationService;
     private RoleRepository roleRepository;
+
+
     public void inscription(User user){
-        if(!user.getMail().contains("@")) {
-            throw new RuntimeException("Email invalide");
-        }
-        if(!user.getMail().contains(".")) {
+        // Validation de l'e-mail
+        if(!user.getMail().contains("@") || !user.getMail().contains(".")) {
             throw new RuntimeException("Email invalide");
         }
         Optional<User> userOptional = this.userRepository.findByMail(user.getMail());
         if(userOptional.isPresent()) {
             throw new RuntimeException("Email déjà utilisé");
         }
+
         String passWordCrypte = this.passwordEncoder.encode(user.getPassword());
         user.setPassWord(passWordCrypte);
 
-        Role roleUser = new Role();
-        roleUser.setLibelle(TypeDeRole.USER);
-        user.setRole(roleUser);
+        // Recherche du rôle utilisateur
+        Optional<Role> userRoleOptional = roleRepository.findByLibelle(TypeDeRole.USER);
+        if (!userRoleOptional.isPresent()) {
+            // Si le rôle n'existe pas, créez-le.
+            Role newUserRole = new Role();
+            newUserRole.setLibelle(TypeDeRole.USER);
+            userRoleOptional = Optional.of(roleRepository.save(newUserRole));
+        }
 
+        // Associer l'utilisateur avec le rôle
+        user.getRoles().add(userRoleOptional.get());
+
+        // Sauvegarde de l'utilisateur
         user = this.userRepository.save(user);
+
+        // Votre logique d'enregistrement de validation
         this.validationService.enregistrer(user);
     }
+
 
     public boolean activation(Map<String, String> activation) {
         try {
@@ -80,7 +94,10 @@ public class UserService implements UserDetailsService {
                 .findByMail(mail)
                 .orElseThrow(() -> new UsernameNotFoundException("Aucun utilisateur ne correspond à cette identifiant"));
 
-        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().getLibelle().name()));
+        // Ici, nous récupérons tous les rôles de l'utilisateur pour les convertir en authorities
+        List<GrantedAuthority> authorities = user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getLibelle().name()))
+                .collect(Collectors.toList());
 
         return new org.springframework.security.core.userdetails.User(user.getMail(), user.getPassword(), authorities);
     }
@@ -93,7 +110,8 @@ public class UserService implements UserDetailsService {
         Role roleAdmin = roleRepository.findByLibelle(TypeDeRole.ADMINISTRATEUR)
                 .orElseThrow(() -> new RuntimeException("Rôle ADMINISTRATEUR introuvable"));
 
-        user.setRole(roleAdmin);
+        // Avec ManyToMany, ajoutez le rôle à la liste des rôles de l'utilisateur
+        user.getRoles().add(roleAdmin);
 
         this.userRepository.save(user);
     }
