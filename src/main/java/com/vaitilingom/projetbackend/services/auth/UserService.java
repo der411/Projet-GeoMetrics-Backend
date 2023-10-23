@@ -1,6 +1,7 @@
 package com.vaitilingom.projetbackend.services.auth;
 
 import com.vaitilingom.projetbackend.TypeDeRole;
+import com.vaitilingom.projetbackend.ValidationRequestDTO;
 import com.vaitilingom.projetbackend.models.auth.Role;
 import com.vaitilingom.projetbackend.models.auth.User;
 import com.vaitilingom.projetbackend.models.auth.Validation;
@@ -65,9 +66,9 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public boolean activation(Map<String, String> activation) {
+    public boolean activation(ValidationRequestDTO activationRequest) {
         try {
-            Validation validation = this.validationService.lireEnFonctionDuCode(activation.get("code"));
+            Validation validation = this.validationService.lireEnFonctionDuCode(activationRequest.getCode());
             if (Instant.now().isAfter(validation.getExpiration())) {
                 throw new RuntimeException("Votre code a expiré");
             }

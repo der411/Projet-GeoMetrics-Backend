@@ -1,5 +1,6 @@
 package com.vaitilingom.projetbackend.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,16 +13,14 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.Arrays;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class ConfigurationSecurityApplication {
 
+    @Autowired
+    private JwtTokenVerifier jwtTokenVerifier;
 
 
     @Bean
@@ -32,7 +31,8 @@ public class ConfigurationSecurityApplication {
                         authorize -> authorize
                                 .requestMatchers("/error", "/inscription", "/validation", "/connexion").permitAll()
                                 .anyRequest().authenticated()
-                );
+                )
+                .addFilterBefore(jwtTokenVerifier, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 
@@ -54,5 +54,4 @@ public class ConfigurationSecurityApplication {
         daoAuthenticationProvider.setPasswordEncoder(this.passwordEncoder());
         return daoAuthenticationProvider;
     }
-
 }

@@ -2,6 +2,7 @@ package com.vaitilingom.projetbackend.controller.auth;
 
 
 import com.vaitilingom.projetbackend.AuthenticationDTO;
+import com.vaitilingom.projetbackend.ValidationRequestDTO;
 import com.vaitilingom.projetbackend.models.auth.User;
 import com.vaitilingom.projetbackend.services.auth.UserService;
 import io.jsonwebtoken.Jwts;
@@ -47,10 +48,11 @@ public class UserController {
     }
 
     @PostMapping(path = "/validation")
-    public ResponseEntity<Map<String, Object>> validation(@RequestBody Map<String, String> validation) {
+    public ResponseEntity<Map<String, Object>> validation(@RequestBody ValidationRequestDTO validationRequest) {
         try {
             log.info("validation");
-            boolean isValid = this.userService.activation(validation);
+            // Ici, vous devriez utiliser validationRequest au lieu de validationRequestDTO
+            boolean isValid = this.userService.activation(validationRequest);
 
             Map<String, Object> response = new HashMap<>();
             response.put("valid", isValid);
@@ -61,6 +63,7 @@ public class UserController {
             return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
         }
     }
+
 
 
     @PostMapping(path = "/connexion")
