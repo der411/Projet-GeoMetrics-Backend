@@ -4,6 +4,8 @@ package com.vaitilingom.projetbackend.controller.auth;
 import com.vaitilingom.projetbackend.AuthenticationDTO;
 import com.vaitilingom.projetbackend.ValidationRequestDTO;
 import com.vaitilingom.projetbackend.models.auth.User;
+import com.vaitilingom.projetbackend.security.Base64Util;
+import com.vaitilingom.projetbackend.services.auth.AuthenticationService;
 import com.vaitilingom.projetbackend.services.auth.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -19,8 +21,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -32,13 +36,15 @@ public class UserController {
 
     private UserService userService;
     private AuthenticationManager authenticationManager;
-    private final String JWT_SECRET;
+
+    private final AuthenticationService authenticationService;
+
 
     @Autowired
-    public UserController(UserService userService, AuthenticationManager authenticationManager, @Qualifier("jwtSecret") String JWT_SECRET) {
+    public UserController(UserService userService, AuthenticationManager authenticationManager, AuthenticationService authenticationService) {
         this.userService = userService;
         this.authenticationManager = authenticationManager;
-        this.JWT_SECRET = JWT_SECRET;
+        this.authenticationService = authenticationService;
     }
 
     @PostMapping (path = "/inscription")
@@ -64,8 +70,6 @@ public class UserController {
         }
     }
 
-
-
     @PostMapping(path = "/connexion")
     public ResponseEntity<Map<String, String>> connexion(@RequestBody AuthenticationDTO authenticationDTO) {
         Map<String, String> response = new HashMap<>();
@@ -77,22 +81,24 @@ public class UserController {
             User user = (User) authenticate.getPrincipal();
 
             // Récupération de tous les rôles
-            String roles = user.getRoles().stream()
+            List<String> rolesList = user.getRoles().stream()
                     .map(role -> role.getLibelle().toString())
-                    .collect(Collectors.joining(","));
+                    .collect(Collectors.toList());
 
-            // Générer le JWT pour l'utilisateur authentifié
+            // Utilisation de la clé secrète JWT
+            Key jwtSecretKey = authenticationService.getJwtSecretKey();
+
             String jwt = Jwts.builder()
                     .setSubject(authenticationDTO.mail())
-                    .claim("roles", roles) // Ajouter tous les rôles comme une claim
+                    .claim("roles", rolesList)
                     .setIssuedAt(new Date())
                     .setExpiration(new Date(System.currentTimeMillis() + 864000000))
-                    .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
+                    .signWith(jwtSecretKey)
                     .compact();
 
             response.put("message", "Connexion réussie");
             response.put("status", "success");
-            response.put("token", jwt);
+            response.put("token", "Bearer " + jwt);
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {

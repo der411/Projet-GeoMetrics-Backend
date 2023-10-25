@@ -4,6 +4,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import com.vaitilingom.projetbackend.services.auth.AuthenticationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,16 +17,18 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.Key;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
+
 @Component
 public class JwtTokenVerifier extends OncePerRequestFilter {
 
-    private final String secret;
+    private final Key jwtSecretKey;
 
-    public JwtTokenVerifier(String secret) {
-        this.secret = secret;
+    @Autowired
+    public JwtTokenVerifier(AuthenticationService authenticationService) {
+        this.jwtSecretKey = authenticationService.getJwtSecretKey();
     }
 
     @Override
@@ -43,14 +47,16 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 
         try {
             Jws<Claims> claimsJws = Jwts.parserBuilder()
-                    .setSigningKey(secret)
+                    .setSigningKey(jwtSecretKey)
                     .build()
                     .parseClaimsJws(token);
 
             Claims body = claimsJws.getBody();
             String username = body.getSubject();
-            var authorities = ((List<Map<String, String>>) body.get("roles")).stream()
-                    .map(m -> new SimpleGrantedAuthority(m.get("authority")))
+
+            List<String> roles = body.get("roles", List.class);
+            var authorities = roles.stream()
+                    .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toSet());
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
@@ -62,7 +68,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
         } catch (JwtException e) {
-            throw new IllegalStateException("Token cannot be trusted");
+            throw new IllegalStateException("Token cannot be trusted. " + e.getMessage());
         }
 
         filterChain.doFilter(request, response);
