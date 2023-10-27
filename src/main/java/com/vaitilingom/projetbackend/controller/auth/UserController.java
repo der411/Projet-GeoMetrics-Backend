@@ -17,15 +17,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -87,6 +85,7 @@ public class UserController {
 
             // Utilisation de la clé secrète JWT
             Key jwtSecretKey = authenticationService.getJwtSecretKey();
+            System.out.println("Secret Key in Connexion: " + Base64.getEncoder().encodeToString(jwtSecretKey.getEncoded()));
 
             String jwt = Jwts.builder()
                     .setSubject(authenticationDTO.mail())
@@ -101,11 +100,16 @@ public class UserController {
             response.put("token", "Bearer " + jwt);
 
             return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            response.put("message", "Erreur lors de la connexion : identifiant ou mot de passe incorrect.");
+        } catch (
+            BadCredentialsException e) {
+            response.put("message", "Identifiant ou mot de passe incorrect.");
             response.put("status", "failure");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-        }
+    }   catch (Exception e) {
+            response.put("message", "Erreur inattendue lors de la connexion.");
+            response.put("status", "failure");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+    }
     }
 
     @PreAuthorize("hasRole('ADMINISTRATEUR')")
