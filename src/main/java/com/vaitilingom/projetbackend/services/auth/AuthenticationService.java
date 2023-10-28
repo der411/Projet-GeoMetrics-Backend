@@ -1,8 +1,8 @@
 package com.vaitilingom.projetbackend.services.auth;
 
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -12,8 +12,13 @@ public class AuthenticationService {
 
     private final Key jwtSecretKey;
 
-    public AuthenticationService() {
-        this.jwtSecretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+    public AuthenticationService(@Value("${jwt.secret}") String secret) {
+        byte[] decodedKey = java.util.Base64.getDecoder().decode(secret);
+        this.jwtSecretKey = Keys.hmacShaKeyFor(decodedKey);
+    }
+
+    public Key getJwtSecretKey() {
+        return jwtSecretKey;
     }
 
 }
