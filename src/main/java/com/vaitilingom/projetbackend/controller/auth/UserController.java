@@ -66,8 +66,8 @@ public class UserController {
     }
 
     @PostMapping(path = "/connexion")
-    public ResponseEntity<Map<String, String>> connexion(@RequestBody AuthenticationDTO authenticationDTO) {
-        Map<String, String> response = new HashMap<>();
+    public ResponseEntity<Map<String, Object>> connexion(@RequestBody AuthenticationDTO authenticationDTO) {
+        Map<String, Object> response = new HashMap<>();
         try {
             final Authentication authenticate = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authenticationDTO.mail(), authenticationDTO.passWord())
@@ -95,18 +95,19 @@ public class UserController {
             response.put("message", "Connexion réussie");
             response.put("status", "success");
             response.put("token", "Bearer " + jwt);
+            response.put("roles", rolesList); // Ajout des rôles à la réponse
 
             return ResponseEntity.ok(response);
         } catch (
-            BadCredentialsException e) {
+                BadCredentialsException e) {
             response.put("message", "Identifiant ou mot de passe incorrect.");
             response.put("status", "failure");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-    }   catch (Exception e) {
+        } catch (Exception e) {
             response.put("message", "Erreur inattendue lors de la connexion.");
             response.put("status", "failure");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-    }
+        }
     }
 
     @PreAuthorize("hasRole('ADMINISTRATEUR')")
