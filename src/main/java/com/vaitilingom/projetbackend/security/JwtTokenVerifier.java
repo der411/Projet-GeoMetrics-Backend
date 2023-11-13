@@ -11,6 +11,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -26,6 +28,7 @@ import java.util.stream.Collectors;
 public class JwtTokenVerifier extends OncePerRequestFilter {
 
     private final Key jwtSecretKey;
+    private static final Logger logger = LoggerFactory.getLogger(JwtTokenVerifier.class);
 
     @Autowired
     public JwtTokenVerifier(AuthenticationService authenticationService) {
@@ -40,7 +43,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
         String requestURI = request.getRequestURI();
 
         // Ne pas appliquer le filtre pour les requêtes vers /inscription
-        if ("/inscription".equals(requestURI) || "/validation".equals(requestURI)) {
+        if ("/inscription".equals(requestURI) || "/validation".equals(requestURI) || "/connexion".equals(requestURI)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -53,9 +56,10 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
         }
 
         String token = authorizationHeader.replace("Bearer ", "");
+        logger.info("Token: {}", token);
+        logger.info("Secret Key in JwtTokenVerifier: {}", Base64.getEncoder().encodeToString(jwtSecretKey.getEncoded()));
 
         try {
-            System.out.println("Secret Key in JwtTokenVerifier: " + Base64.getEncoder().encodeToString(jwtSecretKey.getEncoded()));
             Jws<Claims> claimsJws = Jwts.parserBuilder()
                     .setSigningKey(jwtSecretKey)
                     .build()

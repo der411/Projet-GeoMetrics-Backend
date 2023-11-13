@@ -8,6 +8,8 @@ import com.vaitilingom.projetbackend.services.auth.AuthenticationService;
 import com.vaitilingom.projetbackend.services.auth.UserService;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,6 +35,8 @@ public class UserController {
     private AuthenticationManager authenticationManager;
 
     private final AuthenticationService authenticationService;
+
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 
     @Autowired
@@ -67,6 +71,7 @@ public class UserController {
 
     @PostMapping(path = "/connexion")
     public ResponseEntity<Map<String, Object>> connexion(@RequestBody AuthenticationDTO authenticationDTO) {
+        logger.info("Méthode connexion appelée avec l'adresse mail : {}", authenticationDTO.mail()); // Log de test
         Map<String, Object> response = new HashMap<>();
         try {
             final Authentication authenticate = authenticationManager.authenticate(
@@ -74,15 +79,17 @@ public class UserController {
             );
 
             User user = (User) authenticate.getPrincipal();
+            logger.info("User authenticated: {}", user.getUsername()); // Log the authenticated user
 
             // Récupération de tous les rôles
             List<String> rolesList = user.getRoles().stream()
                     .map(role -> role.getLibelle().toString())
                     .collect(Collectors.toList());
+            logger.info("Roles in Connexion: {}", rolesList);
 
             // Utilisation de la clé secrète JWT
             Key jwtSecretKey = authenticationService.getJwtSecretKey();
-            System.out.println("Secret Key in Connexion: " + Base64.getEncoder().encodeToString(jwtSecretKey.getEncoded()));
+            logger.info("Secret Key in Connexion: {}", Base64.getEncoder().encodeToString(jwtSecretKey.getEncoded()));
 
             String jwt = Jwts.builder()
                     .setSubject(authenticationDTO.mail())
@@ -91,6 +98,8 @@ public class UserController {
                     .setExpiration(new Date(System.currentTimeMillis() + 864000000))
                     .signWith(jwtSecretKey)
                     .compact();
+
+            logger.info("Created token: {}", jwt); // Log the created token
 
             response.put("message", "Connexion réussie");
             response.put("status", "success");
@@ -109,6 +118,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
 
     @PreAuthorize("hasRole('ADMINISTRATEUR')")
     @PostMapping(path = "/set-admin/{mail}")
