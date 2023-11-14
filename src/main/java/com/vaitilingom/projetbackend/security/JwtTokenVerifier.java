@@ -43,7 +43,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
         String requestURI = request.getRequestURI();
 
         // Ne pas appliquer le filtre pour les requêtes vers /inscription
-        if ("/inscription".equals(requestURI) || "/validation".equals(requestURI) || "/connexion".equals(requestURI)) {
+        if ("/inscription".equals(requestURI) || "/validation".equals(requestURI) || "/connexion".equals(requestURI) || "OPTIONS".equals(request.getMethod())) {
             filterChain.doFilter(request, response);
             return;
         }

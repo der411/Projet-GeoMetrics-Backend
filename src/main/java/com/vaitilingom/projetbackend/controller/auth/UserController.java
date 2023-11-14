@@ -20,6 +20,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.security.Key;
 import java.util.*;
@@ -78,12 +79,13 @@ public class UserController {
                     new UsernamePasswordAuthenticationToken(authenticationDTO.mail(), authenticationDTO.passWord())
             );
 
-            User user = (User) authenticate.getPrincipal();
+            org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) authenticate.getPrincipal();
+            String username = user.getUsername();
             logger.info("User authenticated: {}", user.getUsername()); // Log the authenticated user
 
             // Récupération de tous les rôles
-            List<String> rolesList = user.getRoles().stream()
-                    .map(role -> role.getLibelle().toString())
+            List<String> rolesList = user.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toList());
             logger.info("Roles in Connexion: {}", rolesList);
 
@@ -113,6 +115,7 @@ public class UserController {
             response.put("status", "failure");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         } catch (Exception e) {
+            e.printStackTrace();
             response.put("message", "Erreur inattendue lors de la connexion.");
             response.put("status", "failure");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
