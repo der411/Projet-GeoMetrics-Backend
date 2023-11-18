@@ -4,6 +4,7 @@ package com.vaitilingom.projetbackend.controller.auth;
 import com.vaitilingom.projetbackend.AuthenticationDTO;
 import com.vaitilingom.projetbackend.ValidationRequestDTO;
 import com.vaitilingom.projetbackend.models.auth.User;
+import com.vaitilingom.projetbackend.repository.auth.UserRepository;
 import com.vaitilingom.projetbackend.services.auth.AuthenticationService;
 import com.vaitilingom.projetbackend.services.auth.UserService;
 import io.jsonwebtoken.Jwts;
@@ -19,6 +20,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -33,6 +35,11 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
     private AuthenticationManager authenticationManager;
 
     private final AuthenticationService authenticationService;
@@ -74,6 +81,26 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> connexion(@RequestBody AuthenticationDTO authenticationDTO) {
         logger.info("Méthode connexion appelée avec l'adresse mail : {}", authenticationDTO.mail()); // Log de test
         Map<String, Object> response = new HashMap<>();
+
+        // Récupérez l'utilisateur de la base de données
+        Optional<User> optionalUser = userRepository.findByMail(authenticationDTO.mail());
+
+        // Si l'utilisateur n'existe pas, renvoyez une erreur
+        if (!optionalUser.isPresent()) {
+            response.put("message", "Identifiant ou mot de passe incorrect.");
+            response.put("status", "failure");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+
+        User foundUser = optionalUser.get();
+
+        // Si le mot de passe est incorrect, renvoyez une erreur
+        if (!passwordEncoder.matches(authenticationDTO.passWord(), foundUser.getPassword())) {
+            response.put("message", "Identifiant ou mot de passe incorrect.");
+            response.put("status", "failure");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+
         try {
             final Authentication authenticate = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authenticationDTO.mail(), authenticationDTO.passWord())
