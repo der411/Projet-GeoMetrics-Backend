@@ -1,5 +1,6 @@
 package com.vaitilingom.projetbackend.services.auth;
 
+import com.sun.istack.NotNull;
 import com.vaitilingom.projetbackend.TypeDeRole;
 import com.vaitilingom.projetbackend.ValidationRequestDTO;
 import com.vaitilingom.projetbackend.models.auth.Role;
@@ -33,7 +34,7 @@ public class UserService implements UserDetailsService {
     private RoleRepository roleRepository;
 
 
-    public void inscription(User user){
+    public User inscription(@NotNull User user){
         // Validation de l'e-mail
         if(!user.getMail().contains("@") || !user.getMail().contains(".")) {
             throw new RuntimeException("Email invalide");
@@ -63,6 +64,8 @@ public class UserService implements UserDetailsService {
 
         // Votre logique d'enregistrement de validation
         this.validationService.enregistrer(user);
+
+        return user;
     }
 
 

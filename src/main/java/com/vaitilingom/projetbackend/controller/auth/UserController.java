@@ -54,10 +54,15 @@ public class UserController {
         this.authenticationService = authenticationService;
     }
 
-    @PostMapping (path = "/inscription")
-    public void inscription(@RequestBody User user){
+    @PostMapping(path = "/inscription")
+    public ResponseEntity<User> inscription(@RequestBody User user){
         log.info("inscription");
-        this.userService.inscription(user);
+        User registeredUser = this.userService.inscription(user);
+        if (registeredUser != null) {
+            return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping(path = "/validation")
