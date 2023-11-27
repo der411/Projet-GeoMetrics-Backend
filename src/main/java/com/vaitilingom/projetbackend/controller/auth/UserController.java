@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.security.Key;
+import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -128,6 +129,7 @@ public class UserController {
             String jwt = Jwts.builder()
                     .setSubject(authenticationDTO.mail())
                     .claim("roles", rolesList)
+                    .claim("userId", foundUser.getId())
                     .setIssuedAt(new Date())
                     .setExpiration(new Date(System.currentTimeMillis() + 864000000))
                     .signWith(jwtSecretKey)
@@ -168,6 +170,19 @@ public class UserController {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> getUserData(@PathVariable Integer id, Principal principal) {
+        User user = userService.findByMail(principal.getName());
+
+        if (user.getId() == id || userService.isAdmin(user)) {
+            // L'utilisateur est le propriétaire des données ou un administrateur, renvoyez les données
+            return ResponseEntity.ok(userService.getUserData(id));
+        } else {
+            // L'utilisateur n'est ni le propriétaire des données ni un administrateur, renvoyez une erreur 403
+            return new ResponseEntity<>("Vous n'êtes pas autorisé à accéder à ces données", HttpStatus.FORBIDDEN);
         }
     }
 }

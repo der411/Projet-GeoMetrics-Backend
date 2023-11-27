@@ -22,6 +22,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -106,6 +107,27 @@ public class UserService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getMail(), user.getPassword(), authorities);
     }
 
+    public User findByMail(String mail) {
+        UserDetails userDetails = this.loadUserByUsername(mail);
+        return userRepository.findByMail(userDetails.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with email: " + mail));
+    }
+
+    public boolean isAdmin(User user) {
+        Set<Role> roles = user.getRoles();
+        for (Role role : roles) {
+            if (role.getLibelle() == TypeDeRole.ADMINISTRATEUR) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public User getUserData(Integer id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with id : " + id));
+    }
+
     @Transactional
     public void setAdminRoleToUser(String mail){
         User user = this.userRepository.findByMail(mail)
@@ -119,4 +141,5 @@ public class UserService implements UserDetailsService {
 
         this.userRepository.save(user);
     }
+
 }
