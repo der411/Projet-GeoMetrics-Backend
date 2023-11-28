@@ -2,6 +2,7 @@ package com.vaitilingom.projetbackend.services.formes;
 
 import com.vaitilingom.projetbackend.models.formes.Carre;
 import com.vaitilingom.projetbackend.repository.formes.CarreRepository;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,23 +20,33 @@ public class CarreService {
 
     //Méthodes CRUD
 
-    public List<Carre> getCarres() {
-        return carreRepository.findAll();
+    public List<Carre> getCarresByUserId(Integer userId) {
+        return carreRepository.findByUserId(userId);
     }
 
-    public Optional<Carre> getCarreById(int id) {
-        return carreRepository.findById(id);
+    public Optional<Carre> getCarreById(int id, Integer userId) {
+        Optional<Carre> carre = carreRepository.findById(id);
+        if (carre.isPresent() && !carre.get().getUserId().equals(userId)) {
+            throw new AccessDeniedException("Vous n'avez pas le droit d'accéder à ce carré");
+        }
+        return carre;
     }
 
-    public Carre addCarre(Carre carre) {
+    public Carre addCarre(Carre carre, Integer userId) {
+        carre.setUserId(userId);
         return carreRepository.save(carre);
     }
 
-    public Carre updateCarre(Carre carre) {
+    public Carre updateCarre(Carre carre, Integer userId) {
+        carre.setUserId(userId);
         return carreRepository.save(carre);
     }
 
-    public void deleteCarre(int id) {
+    public void deleteCarre(int id, Integer userId) {
+        Optional<Carre> carre = carreRepository.findById(id);
+        if (carre.isPresent() && !carre.get().getUserId().equals(userId)) {
+            throw new AccessDeniedException("Vous n'avez pas le droit de supprimer ce carré");
+        }
         carreRepository.deleteById(id);
     }
 

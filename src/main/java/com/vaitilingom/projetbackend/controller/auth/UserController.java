@@ -175,6 +175,7 @@ public class UserController {
 
     @GetMapping("/user/{id}")
     public ResponseEntity<?> getUserData(@PathVariable Integer id, Principal principal) {
+        logger.info("Méthode getUserData appelée avec l'ID : " + id);
         User user = userService.findByMail(principal.getName());
 
         if (user.getId() == id || userService.isAdmin(user)) {
@@ -184,5 +185,12 @@ public class UserController {
             // L'utilisateur n'est ni le propriétaire des données ni un administrateur, renvoyez une erreur 403
             return new ResponseEntity<>("Vous n'êtes pas autorisé à accéder à ces données", HttpStatus.FORBIDDEN);
         }
+    }
+
+    @GetMapping("/user/me")
+    public ResponseEntity<?> getMyUserData(Principal principal) {
+        String mail = principal.getName();
+        User user = userService.findByMail(mail);
+        return ResponseEntity.ok(user);
     }
 }

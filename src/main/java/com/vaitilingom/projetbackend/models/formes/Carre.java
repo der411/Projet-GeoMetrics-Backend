@@ -16,15 +16,19 @@ public class Carre extends Forme2d {
     @Column(name = "cote")
     private Double cote;
 
+    @Column(name = "user_id")
+    private Integer userId;
+
     // constructeur par défaut (utilisé par l'ORM Hibernate)
     public Carre(){
         super();
     }
 
     // constructeur (non utilisé, mais conservé)
-    public Carre(String nom, String couleur, double cote){
+    public Carre(String nom, String couleur, double cote, Integer userId){
         super(nom, couleur);
         this.cote = cote;
+        this.userId = userId;
     }
 
     // méthodes implémentées

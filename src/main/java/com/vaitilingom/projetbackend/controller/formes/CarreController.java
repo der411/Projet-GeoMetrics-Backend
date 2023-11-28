@@ -1,11 +1,15 @@
 package com.vaitilingom.projetbackend.controller.formes;
 
+import com.vaitilingom.projetbackend.models.auth.User;
 import com.vaitilingom.projetbackend.models.formes.Carre;
+import com.vaitilingom.projetbackend.services.auth.UserService;
 import com.vaitilingom.projetbackend.services.formes.CarreService;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 
+import java.security.Principal;
 import java.util.List;
 
 
@@ -15,50 +19,66 @@ import java.util.List;
 public class CarreController {
 
     private final CarreService carreService;
+    private final UserService userService;
 
-    public CarreController(CarreService carreService) {
+    public CarreController(CarreService carreService, UserService userService) {
+
         this.carreService = carreService;
+        this.userService = userService;
     }
 
     //Endpoints CRUD
-    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATEUR')")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMINISTRATEUR')")
     @GetMapping
-    public List<Carre> getCarres() {
-        return carreService.getCarres();
+    public List<Carre> getCarres(Principal principal) {
+        User user = userService.findByMail(principal.getName());
+        return carreService.getCarresByUserId(user.getId());
     }
-    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATEUR')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
     @GetMapping("/{id}")
-    public Carre getCarreById(@PathVariable int id) {
-        return carreService.getCarreById(id).orElseThrow(() -> new IllegalArgumentException("ID Carré Invalide:" + id));
+    public Carre getCarreById(@PathVariable int id, Principal principal) {
+        User user = userService.findByMail(principal.getName());
+        Carre carre = carreService.getCarreById(id, user.getId()).orElseThrow(() -> new IllegalArgumentException("ID Carré Invalide:" + id));
+        return carre;
     }
-    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATEUR')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
     @PostMapping
-    public Carre addCarre(@RequestBody Carre carre) {
-        return carreService.addCarre(carre);
+    public Carre addCarre(@RequestBody Carre carre, Principal principal) {
+        User user = userService.findByMail(principal.getName());
+        return carreService.addCarre(carre, user.getId());
     }
-    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATEUR')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
     @PutMapping("/{id}")
-    public Carre updateCarre(@PathVariable int id, @RequestBody Carre carre) {
+    public Carre updateCarre(@PathVariable int id, @RequestBody Carre carre, Principal principal) {
+        User user = userService.findByMail(principal.getName());
+        Carre existingCarre = carreService.getCarreById(id, user.getId()).orElseThrow(() -> new IllegalArgumentException("ID Carré Invalide:" + id));
         carre.setId(id);
-        return carreService.updateCarre(carre);
+        return carreService.updateCarre(carre, user.getId());
     }
-    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRATEUR')")
+
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
     @DeleteMapping("/{id}")
-    public void deleteCarre(@PathVariable int id) {
-        carreService.deleteCarre(id);
+    public void deleteCarre(@PathVariable int id, Principal principal) {
+        User user = userService.findByMail(principal.getName());
+        Carre existingCarre = carreService.getCarreById(id, user.getId()).orElseThrow(() -> new IllegalArgumentException("ID Carré Invalide:" + id));
+        carreService.deleteCarre(id, user.getId());
     }
 
 
     //Endpoints méthodes pragmatiques
-    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_USER')")
     @PostMapping("/surface")
-    public double getSurface(@RequestBody Carre carre) {
-        return carreService.calculerSurface(carre);
+    public double getSurface(@RequestBody Carre carre, Principal principal) {
+        User user = userService.findByMail(principal.getName());
+        Carre existingCarre = carreService.getCarreById(carre.getId(), user.getId()).orElseThrow(() -> new IllegalArgumentException("ID Carré Invalide:" + carre.getId()));
+        return carreService.calculerSurface(existingCarre);
     }
-    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_USER')")
     @PostMapping("/perimetre")
-    public double getPerimetre(@RequestBody Carre carre) {
-        return carreService.calculerPerimetre(carre);
+    public double getPerimetre(@RequestBody Carre carre, Principal principal) {
+        User user = userService.findByMail(principal.getName());
+        Carre existingCarre = carreService.getCarreById(carre.getId(), user.getId()).orElseThrow(() -> new IllegalArgumentException("ID Carré Invalide:" + carre.getId()));
+        return carreService.calculerPerimetre(existingCarre);
     }
 }
 
