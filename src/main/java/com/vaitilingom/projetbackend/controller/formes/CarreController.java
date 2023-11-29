@@ -70,15 +70,16 @@ public class CarreController {
     @PostMapping("/surface")
     public double getSurface(@RequestBody Carre carre, Principal principal) {
         User user = userService.findByMail(principal.getName());
-        Carre existingCarre = carreService.getCarreById(carre.getId(), user.getId()).orElseThrow(() -> new IllegalArgumentException("ID Carré Invalide:" + carre.getId()));
-        return carreService.calculerSurface(existingCarre);
+        Carre createdCarre = carreService.createCarre(carre, user.getId());
+        return carreService.calculerSurface(createdCarre);
     }
+
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_USER')")
     @PostMapping("/perimetre")
     public double getPerimetre(@RequestBody Carre carre, Principal principal) {
         User user = userService.findByMail(principal.getName());
-        Carre existingCarre = carreService.getCarreById(carre.getId(), user.getId()).orElseThrow(() -> new IllegalArgumentException("ID Carré Invalide:" + carre.getId()));
-        return carreService.calculerPerimetre(existingCarre);
+        Carre createdCarre = carreService.createCarre(carre, user.getId());
+        return carreService.calculerPerimetre(createdCarre);
     }
 }
 

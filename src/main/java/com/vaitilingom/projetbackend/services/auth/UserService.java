@@ -6,6 +6,7 @@ import com.vaitilingom.projetbackend.ValidationRequestDTO;
 import com.vaitilingom.projetbackend.models.auth.Role;
 import com.vaitilingom.projetbackend.models.auth.User;
 import com.vaitilingom.projetbackend.models.auth.Validation;
+import com.vaitilingom.projetbackend.models.formes.Carre;
 import com.vaitilingom.projetbackend.repository.auth.RoleRepository;
 import com.vaitilingom.projetbackend.repository.auth.UserRepository;
 import jakarta.transaction.Transactional;
@@ -140,6 +141,17 @@ public class UserService implements UserDetailsService {
         user.getRoles().add(roleAdmin);
 
         this.userRepository.save(user);
+    }
+
+    public void addCarreToUser(Carre carre, int userId) {
+        // Récupérez l'utilisateur à partir de la base de données
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("ID Utilisateur Invalide:" + userId));
+
+        // Associez le carré à l'utilisateur
+        user.getCarres().add(carre);
+
+        // Enregistrez l'utilisateur dans la base de données
+        userRepository.save(user);
     }
 
 }

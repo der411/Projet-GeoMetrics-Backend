@@ -1,5 +1,7 @@
 package com.vaitilingom.projetbackend.models.auth;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.vaitilingom.projetbackend.models.formes.Carre;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
@@ -42,6 +41,9 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles = new HashSet<>();
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Carre> carres;
 
 
     @Override
@@ -80,6 +82,11 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return this.actif;
+    }
+
+    //Méthodes pour les formes des utilisateurs
+    public List<Carre> getCarres() {
+        return carres;
     }
 
 }
