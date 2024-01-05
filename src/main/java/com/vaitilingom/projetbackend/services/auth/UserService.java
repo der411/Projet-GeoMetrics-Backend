@@ -143,15 +143,4 @@ public class UserService implements UserDetailsService {
         this.userRepository.save(user);
     }
 
-    public void addCarreToUser(Carre carre, int userId) {
-        // Récupérez l'utilisateur à partir de la base de données
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("ID Utilisateur Invalide:" + userId));
-
-        // Associez le carré à l'utilisateur
-        user.getCarres().add(carre);
-
-        // Enregistrez l'utilisateur dans la base de données
-        userRepository.save(user);
-    }
-
 }

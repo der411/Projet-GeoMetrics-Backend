@@ -1,5 +1,7 @@
 package com.vaitilingom.projetbackend.models.formes;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.vaitilingom.projetbackend.models.auth.User;
 import com.vaitilingom.projetbackend.models.parents.Forme2d;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -18,6 +20,10 @@ public class Triangle extends Forme2d {
 
     @Column(name = "cote_oppose")
     private Double coteOppose;
+
+    @ManyToOne
+    @JsonBackReference
+    private User user;
 
     //Constructeur par défaut (utilisé par l'ORM Hibernate)
     public Triangle(){

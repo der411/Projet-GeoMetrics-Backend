@@ -1,5 +1,7 @@
 package com.vaitilingom.projetbackend.models.formes;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.vaitilingom.projetbackend.models.auth.User;
 import com.vaitilingom.projetbackend.models.parents.Forme3d;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -15,6 +17,10 @@ public class Cube extends Forme3d {
     //Attribut
     @Column(name = "cote")
     private Double cote;
+
+    @ManyToOne
+    @JsonBackReference
+    private User user;
 
     // constructeur par défaut (utilisé par l'ORM Hibernate)
     public Cube() {

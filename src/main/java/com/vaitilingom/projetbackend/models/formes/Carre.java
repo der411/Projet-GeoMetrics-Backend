@@ -18,9 +18,6 @@ public class Carre extends Forme2d {
     @Column(name = "cote")
     private Double cote;
 
-    @Column(name = "user_id", insertable = false, updatable = false)
-    private int userId;
-
     @ManyToOne
     @JsonBackReference
     private User user;
@@ -31,10 +28,10 @@ public class Carre extends Forme2d {
     }
 
     // constructeur (non utilisé, mais conservé)
-    public Carre(String nom, String couleur, double cote, Integer userId){
+    public Carre(String nom, String couleur, double cote, User user){
         super(nom, couleur);
         this.cote = cote;
-        this.userId = userId;
+        this.user = user;
     }
 
     // méthodes implémentées

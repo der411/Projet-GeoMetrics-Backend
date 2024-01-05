@@ -1,5 +1,7 @@
 package com.vaitilingom.projetbackend.models.formes;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.vaitilingom.projetbackend.models.auth.User;
 import com.vaitilingom.projetbackend.models.parents.Forme3d;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -19,16 +21,21 @@ public class Cone extends Forme3d {
     @Column(name = "rayon")
     private Double rayon;
 
+    @ManyToOne
+    @JsonBackReference
+    private User user;
+
     // constructeur par défaut (utilisé par l'ORM Hibernate)
     public Cone(){
         super();
     }
 
     // constructeur (non utilisé, mais conservé)
-    public Cone(String nom, String couleur, Double hauteur, Double rayon) {
+    public Cone(String nom, String couleur, Double hauteur, Double rayon, User user) {
         super(nom, couleur);
         this.hauteur = hauteur;
         this.rayon = rayon;
+        this.user = user;
     }
 
     // méthodes implémentées

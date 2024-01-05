@@ -1,7 +1,7 @@
 package com.vaitilingom.projetbackend.models.auth;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.vaitilingom.projetbackend.models.formes.Carre;
+import com.vaitilingom.projetbackend.models.formes.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,6 +44,30 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
     private List<Carre> carres;
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Cercle> cercles;
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Cone> cones;
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Cube> cubes;
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Cylindre> cylindres;
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Losange> losanges;
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Rectangle> rectangles;
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Sphere> spheres;
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Triangle> triangles;
 
 
     @Override
@@ -82,11 +106,6 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return this.actif;
-    }
-
-    //Méthodes pour les formes des utilisateurs
-    public List<Carre> getCarres() {
-        return carres;
     }
 
 }

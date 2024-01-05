@@ -1,5 +1,7 @@
 package com.vaitilingom.projetbackend.models.formes;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.vaitilingom.projetbackend.models.auth.User;
 import com.vaitilingom.projetbackend.models.parents.Forme2d;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -16,15 +18,20 @@ public class Cercle extends Forme2d {
     @Column(name = "rayon")
     private Double rayon;
 
+    @ManyToOne
+    @JsonBackReference
+    private User user;
+
     // constructeur par défaut (utilisé par l'ORM Hibernate)
     public Cercle(){
         super();
     }
 
     // constructeur (non utilisé, mais conservé)
-    public Cercle(String nom, String couleur, double rayon) {
+    public Cercle(String nom, String couleur, double rayon, User user) {
         super(nom, couleur);
         this.rayon = rayon;
+        this.user = user;
     }
 
     // méthodes implémentées

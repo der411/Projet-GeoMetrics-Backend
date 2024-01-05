@@ -22,7 +22,6 @@ public class CarreController {
     private final UserService userService;
 
     public CarreController(CarreService carreService, UserService userService) {
-
         this.carreService = carreService;
         this.userService = userService;
     }
@@ -32,36 +31,39 @@ public class CarreController {
     @GetMapping
     public List<Carre> getCarres(Principal principal) {
         User user = userService.findByMail(principal.getName());
-        return carreService.getCarresByUserId(user.getId());
+        return carreService.getCarresByUser(user);
     }
+
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
     @GetMapping("/{id}")
     public Carre getCarreById(@PathVariable int id, Principal principal) {
         User user = userService.findByMail(principal.getName());
-        Carre carre = carreService.getCarreById(id, user.getId()).orElseThrow(() -> new IllegalArgumentException("ID Carré Invalide:" + id));
+        Carre carre = carreService.getCarreById(id, user).orElseThrow(() -> new IllegalArgumentException("ID Carré Invalide:" + id));
         return carre;
     }
+
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
     @PostMapping
     public Carre addCarre(@RequestBody Carre carre, Principal principal) {
         User user = userService.findByMail(principal.getName());
-        return carreService.addCarre(carre, user.getId());
+        return carreService.addCarre(carre, user);
     }
+
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
     @PutMapping("/{id}")
     public Carre updateCarre(@PathVariable int id, @RequestBody Carre carre, Principal principal) {
         User user = userService.findByMail(principal.getName());
-        Carre existingCarre = carreService.getCarreById(id, user.getId()).orElseThrow(() -> new IllegalArgumentException("ID Carré Invalide:" + id));
+        Carre existingCarre = carreService.getCarreById(id, user).orElseThrow(() -> new IllegalArgumentException("ID Carré Invalide:" + id));
         carre.setId(id);
-        return carreService.updateCarre(carre, user.getId());
+        return carreService.updateCarre(carre, user);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
     @DeleteMapping("/{id}")
     public void deleteCarre(@PathVariable int id, Principal principal) {
         User user = userService.findByMail(principal.getName());
-        Carre existingCarre = carreService.getCarreById(id, user.getId()).orElseThrow(() -> new IllegalArgumentException("ID Carré Invalide:" + id));
-        carreService.deleteCarre(id, user.getId());
+        Carre existingCarre = carreService.getCarreById(id, user).orElseThrow(() -> new IllegalArgumentException("ID Carré Invalide:" + id));
+        carreService.deleteCarre(id, user);
     }
 
 
@@ -70,7 +72,7 @@ public class CarreController {
     @PostMapping("/surface")
     public double getSurface(@RequestBody Carre carre, Principal principal) {
         User user = userService.findByMail(principal.getName());
-        Carre createdCarre = carreService.createCarre(carre, user.getId());
+        Carre createdCarre = carreService.createCarre(carre, user);
         return carreService.calculerSurface(createdCarre);
     }
 
@@ -78,7 +80,7 @@ public class CarreController {
     @PostMapping("/perimetre")
     public double getPerimetre(@RequestBody Carre carre, Principal principal) {
         User user = userService.findByMail(principal.getName());
-        Carre createdCarre = carreService.createCarre(carre, user.getId());
+        Carre createdCarre = carreService.createCarre(carre, user);
         return carreService.calculerPerimetre(createdCarre);
     }
 }

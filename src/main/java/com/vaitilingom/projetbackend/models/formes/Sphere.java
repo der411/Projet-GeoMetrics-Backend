@@ -1,5 +1,7 @@
 package com.vaitilingom.projetbackend.models.formes;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.vaitilingom.projetbackend.models.auth.User;
 import com.vaitilingom.projetbackend.models.parents.Forme3d;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -15,6 +17,10 @@ public class Sphere extends Forme3d {
     //Attribut
     @Column(name = "rayon")
     private Double rayon;
+
+    @ManyToOne
+    @JsonBackReference
+    private User user;
 
     //Constructeur par défaut (utilisé par l'ORM Hibernate)
     public Sphere(){
