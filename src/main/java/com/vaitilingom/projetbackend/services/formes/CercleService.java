@@ -64,9 +64,4 @@ public class CercleService {
         return cercle.circonference();
     }
 
-    public Cercle createCercle(Cercle cercle, User user) {
-        cercle.setUser(user);
-        Cercle createdCercle = cercleRepository.save(cercle);
-        return createdCercle;
-    }
 }

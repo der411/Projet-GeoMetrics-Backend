@@ -68,20 +68,16 @@ public class CarreController {
 
 
     //Endpoints méthodes pragmatiques
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
     @PostMapping("/surface")
-    public double getSurface(@RequestBody Carre carre, Principal principal) {
-        User user = userService.findByMail(principal.getName());
-        Carre createdCarre = carreService.createCarre(carre, user);
-        return carreService.calculerSurface(createdCarre);
+    public double getSurface(@RequestBody Carre carre) {
+        return carreService.calculerSurface(carre);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
     @PostMapping("/perimetre")
-    public double getPerimetre(@RequestBody Carre carre, Principal principal) {
-        User user = userService.findByMail(principal.getName());
-        Carre createdCarre = carreService.createCarre(carre, user);
-        return carreService.calculerPerimetre(createdCarre);
+    public double getPerimetre(@RequestBody Carre carre) {
+        return carreService.calculerPerimetre(carre);
     }
 }
 

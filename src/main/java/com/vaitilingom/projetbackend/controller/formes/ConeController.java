@@ -65,19 +65,15 @@ public class ConeController {
 
     //Endpoints méthodes pragmatiques
 
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
     @PostMapping("/surface")
-    public double getSurface(@RequestBody Cone cone, Principal principal) {
-        User user = userService.findByMail(principal.getName());
-        Cone createdCone = coneService.createCone(cone, user);
-        return coneService.calculerSurface(createdCone);
+    public double getSurface(@RequestBody Cone cone) {
+        return coneService.calculerSurface(cone);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
     @PostMapping("/volume")
-    public double getPerimetre(@RequestBody Cone cone, Principal principal) {
-        User user = userService.findByMail(principal.getName());
-        Cone createdCone = coneService.createCone(cone, user);
-        return coneService.calculerVolume(createdCone);
+    public double getVolume(@RequestBody Cone cone) {
+        return coneService.calculerVolume(cone);
     }
 }

@@ -63,9 +63,4 @@ public class TriangleService {
         return triangle.perimetre();
     }
 
-    public Triangle createTriangle(Triangle triangle, User user) {
-        triangle.setUser(user);
-        Triangle createdTriangle = triangleRepository.save(triangle);
-        return createdTriangle;
-    }
 }

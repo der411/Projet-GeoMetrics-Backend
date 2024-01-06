@@ -67,19 +67,15 @@ public class CercleController {
 
     //Endpoints méthodes pragmatiques
 
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
     @PostMapping("/surface")
-    public double getSurface(@RequestBody Cercle cercle, Principal principal) {
-        User user = userService.findByMail(principal.getName());
-        Cercle createdCercle = cercleService.createCercle(cercle, user);
-        return cercleService.calculerSurface(createdCercle);
+    public double getSurface(@RequestBody Cercle cercle) {
+        return cercleService.calculerSurface(cercle);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_USER')")
-    @PostMapping("/circonference")
-    public double getCirconference(@RequestBody Cercle cercle, Principal principal) {
-        User user = userService.findByMail(principal.getName());
-        Cercle createdCercle = cercleService.createCercle(cercle, user);
-        return cercleService.calculerCirconference(createdCercle);
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
+    @PostMapping("/perimetre")
+    public double getPerimetre(@RequestBody Cercle cercle) {
+        return cercleService.calculerCirconference(cercle);
     }
 }

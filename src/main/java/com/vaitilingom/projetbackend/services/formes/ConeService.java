@@ -66,9 +66,4 @@ public class ConeService {
         return cone.volume();
     }
 
-    public Cone createCone(Cone cone, User user) {
-        cone.setUser(user);
-        Cone createdCone = coneRepository.save(cone);
-        return createdCone;
-    }
 }

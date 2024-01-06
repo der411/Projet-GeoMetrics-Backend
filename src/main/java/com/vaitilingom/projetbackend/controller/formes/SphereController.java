@@ -1,6 +1,7 @@
 package com.vaitilingom.projetbackend.controller.formes;
 
 import com.vaitilingom.projetbackend.models.auth.User;
+import com.vaitilingom.projetbackend.models.formes.Carre;
 import com.vaitilingom.projetbackend.models.formes.Cone;
 import com.vaitilingom.projetbackend.models.formes.Sphere;
 import com.vaitilingom.projetbackend.services.auth.UserService;
@@ -65,20 +66,16 @@ public class SphereController {
 
     //Endpoints méthodes pragmatiques
 
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
     @PostMapping("/surface")
-    public double getSurface(@RequestBody Sphere sphere, Principal principal) {
-        User user = userService.findByMail(principal.getName());
-        Sphere createdSphere = sphereService.createSphere(sphere, user);
-        return sphereService.calculerSurface(createdSphere);
+    public double getSurface(@RequestBody Sphere sphere) {
+        return sphereService.calculerSurface(sphere);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
     @PostMapping("/volume")
-    public double getPerimetre(@RequestBody Sphere sphere, Principal principal) {
-        User user = userService.findByMail(principal.getName());
-        Sphere createdSphere = sphereService.createSphere(sphere, user);
-        return sphereService.calculerVolume(createdSphere);
+    public double getVolume(@RequestBody Sphere sphere) {
+        return sphereService.calculerVolume(sphere);
     }
 }
 

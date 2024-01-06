@@ -66,19 +66,15 @@ public class CylindreController {
 
     //Endpoints méthodes pragmatiques
 
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
     @PostMapping("/surface")
-    public double getSurface(@RequestBody Cylindre cylindre, Principal principal) {
-        User user = userService.findByMail(principal.getName());
-        Cylindre createdCylindre = cylindreService.createCylindre(cylindre, user);
-        return cylindreService.calculerSurface(createdCylindre);
+    public double getSurface(@RequestBody Cylindre cylindre) {
+        return cylindreService.calculerSurface(cylindre);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
     @PostMapping("/volume")
-    public double getPerimetre(@RequestBody Cylindre cylindre, Principal principal) {
-        User user = userService.findByMail(principal.getName());
-        Cylindre createdCylindre = cylindreService.createCylindre(cylindre, user);
-        return cylindreService.calculerVolume(createdCylindre);
+    public double getVolume(@RequestBody Cylindre cylindre) {
+        return cylindreService.calculerVolume(cylindre);
     }
 }

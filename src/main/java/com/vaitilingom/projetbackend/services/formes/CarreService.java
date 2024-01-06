@@ -64,9 +64,4 @@ public class CarreService {
         return carre.perimetre();
     }
 
-    public Carre createCarre(Carre carre, User user) {
-        carre.setUser(user);
-        Carre createdCarre = carreRepository.save(carre);
-        return createdCarre;
-    }
 }

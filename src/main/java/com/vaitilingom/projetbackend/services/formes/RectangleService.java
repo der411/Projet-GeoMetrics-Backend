@@ -62,9 +62,4 @@ public class RectangleService {
         return rectangle.surface();
     }
 
-    public Rectangle createRectangle(Rectangle rectangle, User user) {
-        rectangle.setUser(user);
-        Rectangle createdRectangle = rectangleRepository.save(rectangle);
-        return createdRectangle;
-    }
 }

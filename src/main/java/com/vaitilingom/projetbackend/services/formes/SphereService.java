@@ -63,10 +63,4 @@ public class SphereService {
     public double calculerVolume(Sphere sphere) {
         return sphere.volume();
     }
-
-    public Sphere createSphere(Sphere sphere, User user) {
-        sphere.setUser(user);
-        Sphere createdSphere = sphereRepository.save(sphere);
-        return createdSphere;
-    }
 }

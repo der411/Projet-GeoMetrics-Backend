@@ -65,9 +65,4 @@ public class CylindreService {
         return cylindre.volume();
     }
 
-    public Cylindre createCylindre(Cylindre cylindre, User user) {
-        cylindre.setUser(user);
-        Cylindre createdCylindre = cylindreRepository.save(cylindre);
-        return createdCylindre;
-    }
 }

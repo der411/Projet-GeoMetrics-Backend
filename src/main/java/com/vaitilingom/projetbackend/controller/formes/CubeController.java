@@ -66,19 +66,15 @@ public class CubeController {
 
     //Endpoints méthodes pragmatiques
 
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
     @PostMapping("/surface")
-    public double getSurface(@RequestBody Cube cube, Principal principal) {
-        User user = userService.findByMail(principal.getName());
-        Cube createdCube = cubeService.createCube(cube, user);
-        return cubeService.calculerSurface(createdCube);
+    public double getSurface(@RequestBody Cube cube) {
+        return cubeService.calculerSurface(cube);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
     @PostMapping("/volume")
-    public double getPerimetre(@RequestBody Cube cube, Principal principal) {
-        User user = userService.findByMail(principal.getName());
-        Cube createdCube = cubeService.createCube(cube, user);
-        return cubeService.calculerVolume(createdCube);
+    public double getVolume(@RequestBody Cube cube) {
+        return cubeService.calculerVolume(cube);
     }
 }

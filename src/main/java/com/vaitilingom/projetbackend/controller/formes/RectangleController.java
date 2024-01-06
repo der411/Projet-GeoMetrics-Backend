@@ -67,19 +67,15 @@ public class RectangleController {
 
 
     //Endpoints méthodes pragmatiques
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
     @PostMapping("/surface")
-    public double getSurface(@RequestBody Rectangle rectangle, Principal principal) {
-        User user = userService.findByMail(principal.getName());
-        Rectangle createdRectangle = rectangleService.createRectangle(rectangle, user);
-        return rectangleService.calculerSurface(createdRectangle);
+    public double getSurface(@RequestBody Rectangle rectangle) {
+        return rectangleService.calculerSurface(rectangle);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
     @PostMapping("/perimetre")
-    public double getPerimetre(@RequestBody Rectangle rectangle, Principal principal) {
-        User user = userService.findByMail(principal.getName());
-        Rectangle createdRectangle = rectangleService.createRectangle(rectangle, user);
-        return rectangleService.calculerPerimetre(createdRectangle);
+    public double getPerimetre(@RequestBody Rectangle rectangle) {
+        return rectangleService.calculerPerimetre(rectangle);
     }
 }

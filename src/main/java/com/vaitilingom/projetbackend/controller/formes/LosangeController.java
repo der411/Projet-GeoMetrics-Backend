@@ -66,19 +66,15 @@ public class LosangeController {
 
     //Endpoints méthodes pragmatiques
 
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
     @PostMapping("/surface")
-    public double getSurface(@RequestBody Losange losange, Principal principal) {
-        User user = userService.findByMail(principal.getName());
-        Losange createdLosange = losangeService.createLosange(losange, user);
-        return losangeService.calculerSurface(createdLosange);
+    public double getSurface(@RequestBody Losange losange) {
+        return losangeService.calculerSurface(losange);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
     @PostMapping("/perimetre")
-    public double getPerimetre(@RequestBody Losange losange, Principal principal) {
-        User user = userService.findByMail(principal.getName());
-        Losange createdLosange = losangeService.createLosange(losange, user);
-        return losangeService.calculerPerimetre(createdLosange);
+    public double getPerimetre(@RequestBody Losange losange) {
+        return losangeService.calculerPerimetre(losange);
     }
 }

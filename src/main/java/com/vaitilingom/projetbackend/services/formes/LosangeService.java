@@ -63,9 +63,4 @@ public class LosangeService {
         return losange.surface();
     }
 
-    public Losange createLosange(Losange losange, User user) {
-        losange.setUser(user);
-        Losange createdLosange = losangeRepository.save(losange);
-        return createdLosange;
-    }
 }

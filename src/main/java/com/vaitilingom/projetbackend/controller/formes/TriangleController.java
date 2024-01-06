@@ -66,19 +66,15 @@ public class TriangleController {
 
 
     //Endpoints méthodes pragmatiques
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
     @PostMapping("/surface")
-    public double getSurface(@RequestBody Triangle triangle, Principal principal) {
-        User user = userService.findByMail(principal.getName());
-        Triangle createdTriangle = triangleService.createTriangle(triangle, user);
-        return triangleService.calculerSurface(createdTriangle);
+    public double getSurface(@RequestBody Triangle triangle) {
+        return triangleService.calculerSurface(triangle);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMINISTRATEUR')")
     @PostMapping("/perimetre")
-    public double getPerimetre(@RequestBody Triangle triangle, Principal principal) {
-        User user = userService.findByMail(principal.getName());
-        Triangle createdTriangle = triangleService.createTriangle(triangle, user);
-        return triangleService.calculerPerimetre(createdTriangle);
+    public double getPerimetre(@RequestBody Triangle triangle) {
+        return triangleService.calculerPerimetre(triangle);
     }
 }

@@ -65,9 +65,4 @@ public class CubeService {
         return cube.volume();
     }
 
-    public Cube createCube(Cube cube, User user) {
-        cube.setUser(user);
-        Cube createdCube = cubeRepository.save(cube);
-        return createdCube;
-    }
 }
